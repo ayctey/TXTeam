@@ -25,12 +25,13 @@
 -(void)addbackButton
 {
     UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStylePlain target:self action:@selector(backSuperController)];
-    self.navigationItem.leftBarButtonItem = button;
+      self.navigationItem.leftBarButtonItem = button;
 }
 
 //设置返回按钮样式
 -(void)setBackButton
 {
+    
     UIBarButtonItem *backItem = [[UIBarButtonItem alloc] init];
     self.navigationItem.backBarButtonItem = backItem;
     if (IsIOS6) {
@@ -52,6 +53,11 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [self.view endEditing:YES];
 }
 
 /*

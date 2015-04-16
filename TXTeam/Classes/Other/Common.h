@@ -48,8 +48,10 @@
 // 14定义statusBar高度
 #define kStatusBarH 20
 
+#define kTabBarH 49
+
 // 15定义背景颜色
-#define kBackgroundColor [UIColor colorWithRed:(CGFloat)233/255 green:(CGFloat)231/255 blue:(CGFloat)233/255 alpha:1.0]
+#define kBackgroundColor [UIColor colorWithRed:(CGFloat)245/255 green:(CGFloat)245/255 blue:(CGFloat)245/255 alpha:1.0]
 
 // 16.定义头视图高度
 #define kHeaderViewHeight (kScreenWidth>320?125:100)
@@ -59,5 +61,14 @@
 
 // 18.定义黄金比例
 #define kGoldenRatio 0.618
+//修改颜色
+#define HEXCOLOR(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
+#define FAKE_SERVER @"http://119.254.110.79:8080/"  // 登录服务器地址，请开发者配置
+#define DebugLog( fmt, ... ) NSLog( @"[%@:(%d)] %@", [[NSString stringWithUTF8String:__FILE__] lastPathComponent], __LINE__, [NSString stringWithFormat:(fmt), ##__VA_ARGS__] )
 
+//API
+#import "APIManage.h"
+
+#import "Reachability.h"
+#import "MMProgressHUD.h"
 
