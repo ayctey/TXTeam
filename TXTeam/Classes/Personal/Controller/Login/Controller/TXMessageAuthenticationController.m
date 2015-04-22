@@ -189,8 +189,7 @@
     UITextField *tel = (UITextField *)[self.view viewWithTag:101];
    // NSLog(@"numbers：%@",tel.text);
     NSDictionary *dic = @{@"tel":tel.text};
-    [TXDataService POST:existTel param:dic completionBlock:^(id responseObject, NSError *error) {
-        
+    [TXDataService POST:existTel param:dic isCache:NO caChetime:0 completionBlock:^(id responseObject, NSError *error) {
         NSNumber *ss=[responseObject objectForKey:@"result"];
         //注册过
         if ([ss boolValue]) {

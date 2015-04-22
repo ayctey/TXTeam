@@ -24,7 +24,7 @@
     [MMProgressHUD showWithTitle:nil status:@"加载中..."];
     
     NSDictionary *param = @{@"province_id":_province_id};
-    [TXDataService GET:getCity param:param completionBlock:^(id responseObject, NSError *error) {
+    [TXDataService GET:getCity param:param isCache:YES caChetime:0 completionBlock:^(id responseObject, NSError *error) {
         if (error) {
             [MMProgressHUD dismissWithError:@"加载失败！"];
             return ;

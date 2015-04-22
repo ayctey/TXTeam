@@ -23,12 +23,14 @@
     [self reserveBarbutton];
     [self initView];
 }
+
 -(void)reserveBarbutton {
     
     UIBarButtonItem *reserve = [[UIBarButtonItem alloc]initWithTitle:@"保存" style:UIBarButtonItemStyleDone target:self action:@selector(Comply_reservebutton)];
     self.navigationItem.rightBarButtonItem = reserve;
     
 }
+
 -(void)initView
 {
     UIView *homeview = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, 50)];

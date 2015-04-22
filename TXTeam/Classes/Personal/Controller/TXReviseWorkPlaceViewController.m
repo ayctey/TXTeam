@@ -13,6 +13,7 @@
 #import "TXDataService.h"
 #import "TXTool.h"
 #import "TXAreaModel.h"
+
 @interface TXReviseWorkPlaceViewController ()
 
 @end
@@ -29,7 +30,6 @@
 -(void)viewWillAppear:(BOOL)animated {
 
     [super viewWillAppear:YES];
-
     
     TXTool *tool = [TXTool sharedTXTool];
     if (tool.areaModel != nil) {
@@ -40,23 +40,19 @@
         
         tool.areaModel = nil;
     }
-
-    
-    
-    
-    
-
 }
+
 -(void)reserveBarbutton {
     
     UIBarButtonItem *reserve = [[UIBarButtonItem alloc]initWithTitle:@"保存" style:UIBarButtonItemStyleDone target:self action:@selector(reservebutton)];
     self.navigationItem.rightBarButtonItem = reserve;
     
 }
+
 -(void)initView
 {
     
-    UIView *homeview = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, 50)];
+    UIView *homeview = [[UIView alloc]initWithFrame:CGRectMake(0, kNavigationH, kScreenWidth, 50)];
     homeview.backgroundColor = kBackgroundColor;
     [self.view addSubview:homeview];
     UILabel *lab =[[UILabel alloc]initWithFrame:CGRectMake(10, 10, kScreenWidth*0.3+30, 30)];
@@ -70,10 +66,8 @@
     // homebtn.backgroundColor =[UIColor redColor];
     workbtn.tag = 101;
     [homeview addSubview:workbtn];
-    
-    
-    
 }
+
 -(void)reservebutton
 {
     [self.navigationController popViewControllerAnimated:YES];
@@ -87,21 +81,21 @@
     //修改后的家乡重新存入单例
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [ defaults setValue:_newworkplace forKey:@"workplace"];
-
 }
+
 -(void)workbtnClick
 {
-    
        TXProvinceController *province = [[TXProvinceController alloc] init];
        [self.navigationController pushViewController:province animated:YES];
 }
+
 #pragma mark- 加载数据
 -(void)reviseWorkplace {
 
     [MMProgressHUD showWithStatus:@"加载中..."];
     
     NSDictionary *dic  = @{@"area_id":_area_id};
-    [TXDataService POST:updateWorkplace param:dic completionBlock:^(id responseObject, NSError *error) {
+    [TXDataService POST:updateWorkplace param:dic isCache:NO caChetime:0 completionBlock:^(id responseObject, NSError *error) {
         if (error) {
             [MMProgressHUD dismissWithError:@"修改失败！"];
             return ;
@@ -113,8 +107,8 @@
         }
         MyLog(@"修改成功！");
     }];
-
 }
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

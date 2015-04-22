@@ -13,7 +13,6 @@
 @interface TXAreaController : TXProvinceController
 {
     NSMutableArray *areaData;
-    
 }
 @property (nonatomic,strong) NSString *city_id;
 @property (nonatomic,strong) NSString *city;

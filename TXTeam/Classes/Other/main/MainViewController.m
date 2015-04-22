@@ -55,10 +55,6 @@
     }
     self.viewControllers = viewControllers;
     self.selectedIndex = 1;
-    //self.tabBar.barTintColor = [UIColor blackColor];
-    //添加图片
-    //[self addTabbarItemImage:controllers];
-    //self.tabBar.hidden = YES;
     [self initCustomTabbar];
 }
 
@@ -71,11 +67,9 @@
     [self.tabBar addSubview:bottomBar];
     NSArray *itemsImage_normal = @[@"信息@2x",@"信封@2x",@"用户@2x"];
     NSArray *itemsImage_selected=@[@"发光信息@2x",@"发亮信封@2x",@"发光用户@2x"];
-   // NSLog(@"bbbbb:%f",kScreenWidth);
     for (int i = 0; i < 3; i ++) {
         UIButton *item = [UIButton buttonWithType:UIButtonTypeCustom];
-        //[item setImage:[UIImage imageNamed:itemsImage_normal[i]] forState:UIControlStateNormal];
-        [item setImage:[UIImage imageNamed:itemsImage_normal[i]] forState:UIControlStateNormal];
+               [item setImage:[UIImage imageNamed:itemsImage_normal[i]] forState:UIControlStateNormal];
         [item setImage:[UIImage imageNamed:itemsImage_selected[i]] forState:UIControlStateSelected];
         item.tag = i;
       //  CGFloat x = kScreenWidth/5-BARITEM_WIDTH;

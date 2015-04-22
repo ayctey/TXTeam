@@ -23,7 +23,7 @@
 
 - (void)initTableView
 {
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight - kNavigationH) style:UITableViewStylePlain];
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight ) style:UITableViewStylePlain];
     _tableView.dataSource = self;
     _tableView.delegate = self;
     [self.view addSubview:_tableView];
@@ -35,7 +35,7 @@
     [MMProgressHUD showWithTitle:nil status:@"加载中..."];
     //[MMProgressHUD showProgressWithStyle:MMProgressHUDProgressStyleLinear title:nil status:@"dddd"];
     
-    [TXDataService GET:getProvince param:nil completionBlock:^(id responseObject, NSError *error) {
+    [TXDataService GET:getProvince param:nil isCache:YES caChetime:10*24*60*60 completionBlock:^(id responseObject, NSError *error) {
         if (error) {
             [MMProgressHUD dismissWithError:@"加载失败！"];
             return ;

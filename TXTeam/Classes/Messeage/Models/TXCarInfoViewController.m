@@ -46,8 +46,6 @@
     [self initSubView];
     //获取当前时间，并将值传给TXTool
     [self getDate];
-    
-    
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -122,7 +120,7 @@
     }
     
     //查询汽车班次
-    [TXDataService POST:getDeparture_Timetable param:params completionBlock:^(id responseObject, NSError *error) {
+    [TXDataService POST:getDeparture_Timetable param:params isCache:NO caChetime:0 completionBlock:^(id responseObject, NSError *error) {
         if (error) {//请求错误，提示信息
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"网络请求失败！" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
             [alert show];
@@ -167,7 +165,7 @@
     //1.添加SegmentControl
     NSArray *datename =@[@"前一天",month,@"后一天"];
     _segment = [[UISegmentedControl alloc]initWithItems:datename];
-    _segment.frame =CGRectMake(30, 10, kScreenWidth-60, 40);
+    _segment.frame =CGRectMake(30, kNavigationH+10, kScreenWidth-60, 40);
     _segment.backgroundColor =[UIColor whiteColor];
     _segment.selectedSegmentIndex = 1;
     _segment.tintColor = [UIColor redColor];
@@ -175,7 +173,7 @@
     [self.view addSubview:_segment];
     
     //2.添加tableView
-    _tableView = [[TXBaseTableView alloc] initWithFrame:CGRectMake(0, 60, kScreenWidth, kScreenHeight-kNavigationH-60-kTabBarH) style:UITableViewStylePlain];
+    _tableView = [[TXBaseTableView alloc] initWithFrame:CGRectMake(0, kNavigationH+10+40, kScreenWidth, kScreenHeight-kNavigationH-50-kTabBarH) style:UITableViewStylePlain];
     _tableView.dataSource = self;
     _tableView.delegate = self;
     _tableView.rowHeight = 120;

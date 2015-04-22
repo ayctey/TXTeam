@@ -10,10 +10,12 @@
 #import "TXLoginViewController.h"
 #import "SMS_SDK/SMS_SDK.h"
 #import "TXBaseNavController.h"
-#define RONGCLOUD_IM_APPKEY    @"k51hidwq1fxnb" //这个AppKey值RongCloud实例。
-//短信验证
-#define appKey @"5542fb9d0a79"
-#define appSecret @"cf5c8690534f02f196c0139218209c08"
+#import "MainViewController.h"
+#import "TXLoginViewController.h"
+#import "TXDataService.h"
+#import "TXLoginRCIM.h"
+#import "Common.h"
+
 @interface AppDelegate ()
 
 @end
@@ -26,9 +28,9 @@
     self.window = [[UIWindow alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
     
     //实施网络状况监听
-    rechable = [Reachability reachabilityWithHostName:@"www.baidu.com"];
-    [rechable startNotifier];
+    [self setNetworkMonitor];
     
+    //设置缓存大小
     NSURLCache *URLCache = [[NSURLCache alloc] initWithMemoryCapacity:8 * 1024 * 1024 diskCapacity:0 diskPath:nil];
     [NSURLCache setSharedURLCache:URLCache];
     
@@ -49,12 +51,10 @@
     return YES;
 }
 
-
-
 - (void)connectSMS {
     //
-    [SMS_SDK registerApp:appKey
-              withSecret:appSecret];
+    [SMS_SDK registerApp:SMSAppKey
+              withSecret:SMSAppSecret];
 }
 
 - (void)connectRCIM:(UIApplication *)application {
@@ -65,9 +65,7 @@
     [application setStatusBarStyle:UIStatusBarStyleLightContent];
     //设置苹果push通知
     if ([application respondsToSelector:@selector(registerUserNotificationSettings:)]) {
-        UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:(UIRemoteNotificationTypeBadge
-                                                                                             |UIRemoteNotificationTypeSound
-                                                                                             |UIRemoteNotificationTypeAlert) categories:nil];
+        UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:(UIRemoteNotificationTypeBadge|UIRemoteNotificationTypeSound|UIRemoteNotificationTypeAlert) categories:nil];
         [application registerUserNotificationSettings:settings];
     } else {
         UIRemoteNotificationType myTypes = UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeSound;
@@ -75,12 +73,6 @@
     }
     
     [[RCIM sharedRCIM]setReceiveMessageDelegate:self];
-}
-- (void)dealloc {
-    //停止监听网络状况
-    [rechable stopNotifier];
-    // 删除通知对象
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 //#ifdef __IPHONE_8_0
@@ -98,7 +90,7 @@
     else if ([identifier isEqualToString:@"answerAction"]){
     }
 }
-//#endif
+
 -(void)didReceivedMessage:(RCMessage *)message left:(int)nLeft
 {
     if (0 == nLeft) {
@@ -106,36 +98,11 @@
             [UIApplication sharedApplication].applicationIconBadgeNumber = [UIApplication sharedApplication].applicationIconBadgeNumber+1;
         });
     }
-    
-    
-}
-- (void)applicationWillResignActive:(UIApplication *)application {
-    // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-    // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
-    NSLog(@"applicationWillResignActive");
 }
 
-- (void)applicationDidEnterBackground:(UIApplication *)application {
-    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
-    // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-    NSLog(@"applicationDidEnterBackground");
-}
-
-- (void)applicationWillEnterForeground:(UIApplication *)application {
-    // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
-    NSLog(@"applicationWillEnterForeground");
-}
-
-- (void)applicationDidBecomeActive:(UIApplication *)application {
-    // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-}
-
-- (void)applicationWillTerminate:(UIApplication *)application {
-    // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-}
 -(void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error{
     NSLog(@"error:%@",error);
-    //[RCIM initWithAppKey:RONGCLOUD_IM_APPKEY deviceToken:nil];
+    [RCIM initWithAppKey:RONGCLOUD_IM_APPKEY deviceToken:nil];
 }
 
 -(void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
@@ -149,6 +116,12 @@
     [[RCIM sharedRCIM]setDeviceToken:deviceToken];
 }
 
+#pragma mark 进入前台后设置消息信息
+-(void)applicationWillEnterForeground:(UIApplication *)application{
+    //进入前台取消应用消息图标
+    [[UIApplication sharedApplication]setApplicationIconBadgeNumber:0];
+}
+
 -(UIImage *)createImageWithColor:(UIColor *)color
 {
     CGRect rect = CGRectMake(0.0f, 0.0f, 1.0f, 1.0f);
@@ -160,6 +133,122 @@
     UIGraphicsEndImageContext();
     
     return theImage;
+}
+
+#pragma mark - 网络状况监听
+-(void)setNetworkMonitor
+{
+    //实施网络状况监听
+    rechable = [Reachability reachabilityWithHostName:@"www.baidu.com"];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(networkStateChange) name:kReachabilityChangedNotification object:nil];
+    //延时进行网络监测通知
+    [self performSelector:@selector(startNotifier) withObject:nil afterDelay:0.01f];
+}
+
+//开始网络监测通知
+-(void)startNotifier
+{
+    [rechable startNotifier];
+}
+
+//监控网络状态的变化
+-(void)networkStateChange
+{
+    // 检测手机是否能上网络(WIFI\3G\2.5G)
+    Reachability *conn = [Reachability reachabilityForInternetConnection];
+    
+    // 判断网络状态
+    if ([conn currentReachabilityStatus] != NotReachable) {
+        [self isLogin];
+    } else {
+        // 没有网络
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"断网啦！" delegate:self cancelButtonTitle:@"好" otherButtonTitles: nil];
+        [alert show];
+    }
+}
+
+- (void)dealloc {
+    //停止监听网络状况
+    [rechable stopNotifier];
+    // 删除通知对象
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+//判断是否曾经已经成功登陆，没有就重新登录
+-(void)isLogin
+{
+    //获取本地账号密码
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    
+    //本地账号密码登陆
+    if ([defaults objectForKey:@"account"] && [defaults objectForKey:@"password"]) {
+        //是否有网络连接
+        
+        if (!rechable.isReachable) {
+            //进入网络
+            MyLog(@"recable:%d",rechable.isReachable);
+            [self pushMaincomtroller];
+        }else
+        {
+            NSDictionary *param = @{@"account":[defaults objectForKey:@"account"],@"password":[defaults objectForKey:@"password"]};
+            [TXDataService POST:_login param:param isCache:NO caChetime:0 completionBlock:^(id responseObject, NSError *error) {
+                NSDictionary *dic = responseObject;
+                int success = [[dic objectForKey:@"success"] intValue];
+                if (success) {
+                    
+                    //链接融云
+                    [[TXLoginRCIM shareLoginRCIM] connectRCIM];
+                    
+                    MyLog(@"%@",[responseObject objectForKey:@"data"]);
+                    NSDictionary *data = [responseObject objectForKey:@"data"];
+                    
+                    //保存用户信息在本地
+                    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+                    [defaults setValue:[data objectForKey:@"account"] forKey:@"account"];
+                    [defaults setValue:[data objectForKey:@"birthday"] forKey:@"birthday"];
+                    [defaults setValue:[data objectForKey:@"intro"] forKey:@"intro"];
+                    [defaults setValue:[data objectForKey:@"isValid"] forKey:@"isValid"];
+                    [defaults setValue:[data objectForKey:@"motorcade_Name"] forKey:@"motorcade_Name"];
+                    [defaults setValue:[data objectForKey:@"tel"] forKey:@"tel"];
+                    [defaults setValue:[data objectForKey:@"password"] forKey:@"password"];
+                    [defaults setValue:[data objectForKey:@"protrait_Url"] forKey:@"protrait_Url"];
+                    [defaults setValue:[data objectForKey:@"sex"] forKey:@"sex"];
+                    [defaults setValue:[data objectForKey:@"trainman_ID"] forKey:@"trainman_ID"];
+                    [defaults setValue:[data objectForKey:@"trainman_Name"] forKey:@"trainman_Name"];
+                    
+                    //进入主页
+                    [self pushMaincomtroller];
+                }
+            }];
+        }
+    }
+    else
+    {
+        //进入登陆界面
+        TXLoginViewController *login = [[TXLoginViewController alloc] init];
+        TXBaseNavController *nav = [[TXBaseNavController alloc] initWithRootViewController:login];
+        nav.navigationBarHidden = YES;
+        self.window.rootViewController = nav;
+    }
+}
+
+#pragma mark - LoginDelegate
+
+//进入主页
+-(void)pushMaincomtroller
+{
+    self.window.rootViewController = nil;
+    MainViewController *mainCtrl = [[MainViewController alloc] init];
+    self.window.rootViewController = mainCtrl;
+}
+
+//进入登陆界面
+-(void)pushToLoginViewcontroller
+{
+    self.window.rootViewController = nil;
+    TXLoginViewController *loginViewController = [[TXLoginViewController alloc] init];
+    self.window.rootViewController = loginViewController;
 }
 
 @end

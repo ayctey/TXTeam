@@ -95,7 +95,7 @@
 
     UITextField *text = (UITextField *)[self.view viewWithTag:104];
     NSDictionary *dic = @{@"account":text.text};
-    [TXDataService POST:existAccount param:dic completionBlock:^(id responseObject, NSError *error) {
+    [TXDataService POST:existAccount param:dic isCache:NO caChetime:0 completionBlock:^(id responseObject, NSError *error) {
         NSNumber *num = [responseObject objectForKey:@"result"];
         //已经注册过
         if ([num boolValue]) {
@@ -138,8 +138,8 @@
     NSLog(@"密码:%@",confirmPasswordField.text);
     NSLog(@"注册手机号码:%@",phoneNumbers);
     NSDictionary *dic =@{@"account":_accountField.text,@"password":confirmPasswordField.text,@"tel":phoneNumbers};
-    [TXDataService POST:register param:dic completionBlock:^(id responseObject, NSError *error) {
-        NSLog(@"ssff:%@",[responseObject objectForKey:@"result"]);
+    [TXDataService POST:register param:dic isCache:NO caChetime:0 completionBlock:^(id responseObject, NSError *error) {
+        MyLog(@"ssff:%@",[responseObject objectForKey:@"result"]);
         NSNumber *number =[responseObject objectForKey:@"result"];
         //注册成功
         if ([number boolValue]) {
@@ -157,14 +157,13 @@
     NSDictionary *parm =  @{@"account":_accountField.text,
                             @"password":confirmPasswordField.text};
 
-    [TXDataService POST:_login param:parm completionBlock:^(id responseObject, NSError *error) {
-        
-        NSLog(@"_____+++");
+    [TXDataService POST:_login param:parm isCache:NO caChetime:0 completionBlock:^(id responseObject, NSError *error) {
         if ([[responseObject objectForKey:@"success"] intValue] == 1) {//登录成功
             //保存信息
-            NSLog(@"message:%@",[responseObject objectForKey:@"success"]);
-            NSLog(@"data : %@",[responseObject objectForKey:@"data"]);
+            MyLog(@"message:%@",[responseObject objectForKey:@"success"]);
+            MyLog(@"data : %@",[responseObject objectForKey:@"data"]);
             NSDictionary *data = [responseObject objectForKey:@"data"];
+            
             //将数据存到系统自带的单例中
             NSUserDefaults *defaults = [NSUserDefaults  standardUserDefaults];
             [defaults setValue:[data objectForKey:@"account"] forKey:@"account"];

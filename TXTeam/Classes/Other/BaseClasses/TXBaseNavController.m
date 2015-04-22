@@ -16,8 +16,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self.navigationBar setBackgroundColor:[UIColor whiteColor]];
-    [self.navigationBar setBackgroundImage:[UIImage imageNamed:@"Title bar.png"] forBarMetrics:UIBarMetricsDefault];
+//    [self.navigationBar setBackgroundColor:[UIColor whiteColor]];
+//    [self.navigationBar setBackgroundImage:[UIImage imageNamed:@"Title bar.png"] forBarMetrics:UIBarMetricsDefault];
+    self.navigationBar.barTintColor = [UIColor redColor];
 }
 
 - (void)didReceiveMemoryWarning {

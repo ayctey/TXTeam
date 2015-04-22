@@ -20,11 +20,11 @@ singleton_interface(TXTool)
 
 @property (nonatomic,copy) NSString *currentDate;
 @property (nonatomic,assign) NSInteger areaIndex;     //区域索引
-@property (nonatomic,assign) BOOL beginSearch;   //搜索索引
+@property (nonatomic,assign) BOOL beginSearch;        //搜索索引
 
 @property (nonatomic,strong) TXAreaModel *areaModel;
 @property (nonatomic,copy) NSString *selectCity;
 @property (nonatomic,copy) NSString *selectProvince;
 @property (nonatomic,copy) NSString *selectAreaID;
-@property (nonatomic,copy) NSString *WhetherHometown;//是哪个控制器选择
+@property (nonatomic,copy) NSString *WhetherHometown; //是哪个控制器选择
 @end

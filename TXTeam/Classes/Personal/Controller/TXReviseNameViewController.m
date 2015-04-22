@@ -22,6 +22,7 @@
     [self reserveBarbutton];
     [self initMainview];
 }
+
 -(void)reserveBarbutton {
     
     UIBarButtonItem *reserve = [[UIBarButtonItem alloc]initWithTitle:@"保存" style:UIBarButtonItemStyleDone target:self action:@selector(Name_reservebutton)];
@@ -30,7 +31,7 @@
 }
 -(void)initMainview{
 
-    UIView *homeview = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, 50)];
+    UIView *homeview = [[UIView alloc]initWithFrame:CGRectMake(0, kNavigationH, kScreenWidth, 50)];
     homeview.backgroundColor = kBackgroundColor;
     [self.view addSubview:homeview];
     UILabel *lab =[[UILabel alloc]initWithFrame:CGRectMake(10, 10, kScreenWidth*0.3+30, 30)];
@@ -41,10 +42,8 @@
     nameText.tag =201;
     nameText.placeholder =_fomalname;
     [homeview addSubview:nameText];
-
-
-
 }
+
 -(void)getname: (NSString *)namelabe{
     
     _fomalname = namelabe;
@@ -54,7 +53,6 @@
 //按钮 保存 的方法
 -(void)Name_reservebutton
 {
-    
     UITextField *text =(UITextField *)[self.view viewWithTag:201];
     //修改姓名框不为空时才能显示修改后的内容
     if (![text.text isEqual:@""]) {
@@ -70,24 +68,22 @@
     }
     else{
         
-        
     [self reviseName];
-    
+        
     }
     
 }
 #pragma mark -- 加载数据
 -(void)reviseName
 {
-    NSDictionary *parm = @{@"name":nameText.text};
-    [TXDataService POST:updateName param:parm completionBlock:^(id responseObject, NSError *error) {
-        if ([responseObject objectForKey:@"success"]) {
+    NSDictionary *param = @{@"name":nameText.text};
+    [TXDataService POST:updateName param:param isCache:NO caChetime:0 completionBlock:^(id responseObject, NSError *error) {
+        
+           if ([responseObject objectForKey:@"success"]) {
             NSLog(@"responseobject:%@",[responseObject objectForKey:@"success"]);
             [self.navigationController popViewControllerAnimated:YES];
         }
-       
         
-
     }];
     
 }

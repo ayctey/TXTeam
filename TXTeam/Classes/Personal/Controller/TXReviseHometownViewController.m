@@ -13,6 +13,7 @@
 #import "TXTool.h"
 #import "TXAreaModel.h"
 #import "TXDataService.h"
+
 @interface TXReviseHometownViewController ()
 
 @end
@@ -46,28 +47,30 @@
     self.navigationItem.rightBarButtonItem = reserve;
 
 }
+
 -(void)initView
 {
-  
-    UIView *homeview = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, 50)];
+    UIView *homeview = [[UIView alloc]initWithFrame:CGRectMake(0, kNavigationH, kScreenWidth, 50)];
     homeview.backgroundColor = kBackgroundColor;
     [self.view addSubview:homeview];
     UILabel *lab =[[UILabel alloc]initWithFrame:CGRectMake(10, 10, kScreenWidth*0.2, 30)];
     lab.text = @"家乡：";
     [homeview addSubview:lab];
     
-    homebtn = [[UIButton alloc]initWithFrame:CGRectMake(kScreenWidth*0.2, 0, kScreenWidth*0.8, 50)];
+    //按钮宽
+    CGFloat btnWidth = kScreenHeight*0.8;
+    //按钮高
+    CGFloat btnHeigth = 50;
+    homebtn = [[UIButton alloc]initWithFrame:CGRectMake(kScreenWidth-btnWidth, 0, btnWidth, btnHeigth)];
     [homebtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [homebtn setTitle:_formalhometown forState:UIControlStateNormal];
     [homebtn addTarget:self action:@selector(homebtnClick) forControlEvents:UIControlEventTouchUpInside];
-   // homebtn.backgroundColor =[UIColor redColor];
     homebtn.tag = 101;
     [homeview addSubview:homebtn];
 }
 
 -(void)reservebutton
 {
-
     [self.navigationController popViewControllerAnimated:YES];
    
     TXPersonalViewController *person = [[TXPersonalViewController alloc]init];
@@ -81,6 +84,7 @@
    [ defaults setValue:_newhometown forKey:@"area"];
     
 }
+
 -(void)homebtnClick
 {
     TXProvinceController *province = [[TXProvinceController alloc] init];
@@ -91,14 +95,12 @@
 -(void)reviseHomeTown {
     
     [MMProgressHUD showWithStatus:@"加载中..."];
-    
     NSDictionary *dic= @{@"area_id":_area_id};
-    [TXDataService POST:updateArea param:dic completionBlock:^(id responseObject, NSError *error) {
-        if (error) {
+    [TXDataService POST:updateArea param:dic isCache:YES caChetime:10*24*60*60 completionBlock:^(id responseObject, NSError *error) {
+            if (error) {
             [MMProgressHUD dismissWithError:@"修改失败！"];
             return ;
         }
-        
         if (![[responseObject objectForKey:@"success"] isEqual:@(1)]) {
             [MMProgressHUD dismissWithError:@"修改失败！"];
             return ;
@@ -106,7 +108,6 @@
         MyLog(@"修改成功！");
         [MMProgressHUD dismiss];
     }];
-
 }
 
 -(void)didReceiveMemoryWarning {

@@ -37,6 +37,7 @@
     //为企业添加通知
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(modifyComply:) name:@"newcomplyname" object:nil];
 }
+
 //添加注销按钮
 - (void)addBarItem
 {
@@ -44,21 +45,23 @@
     item.tintColor = [UIColor blackColor];
     self.navigationItem.rightBarButtonItem = item;
 }
+
 - (void)initViews
 {
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(userTapClick:)];
     
     UserView *userView = [[UserView alloc] init];
-    userView.frame = CGRectMake(0, 0, kScreenWidth, userView_height);
+    userView.frame = CGRectMake(0, kNavigationH, kScreenWidth, userView_height);
     userView.backgroundColor = kBackgroundColor;
     [userView addGestureRecognizer:tapGesture];
     [self.view addSubview:userView];
+    
     NSArray *title_arr = @[@"家乡",@"工作所在地",@"企业",@"帮助",@"关于"];
     for (int i = 0; i < 5; i++) {
         UIView *view = [[UIView alloc] init];
-       // view.tag = 100+i;
+        // view.tag = 100+i;
         view.backgroundColor = kBackgroundColor;
-        view.frame = CGRectMake(0, userView_height+kSpacing+45*i, kScreenWidth, 40);
+        view.frame = CGRectMake(0, userView_height+kSpacing+kNavigationH+45*i, kScreenWidth, 40);
         [self.view addSubview:view];
         
         UILabel *titleLabel = [[UILabel alloc] init];
@@ -66,8 +69,8 @@
         titleLabel.text = title_arr[i];
         [view addSubview:titleLabel];
         
-        UITextField *hometowntextfield = [[UITextField alloc]initWithFrame:CGRectMake(kScreenWidth*0.3-10, 0, kScreenWidth*0.7, 40)];
-        hometowntextfield.textAlignment=NSTextAlignmentCenter;
+        UITextField *hometowntextfield = [[UITextField alloc]initWithFrame:CGRectMake(kScreenWidth*0.3, 0, kScreenWidth*0.7, 40)];
+        hometowntextfield.textAlignment=NSTextAlignmentRight;
         hometowntextfield.borderStyle =UITextBorderStyleNone;
         hometowntextfield.tag = 100+i;
         textfieldTag = hometowntextfield.tag;
@@ -75,34 +78,29 @@
         [self getUserDefaultData:hometowntextfield index:i];
         hometowntextfield.delegate =self;
         [view addSubview: hometowntextfield];
-        
     }
-
-
 }
+
 //点击用户头像方法
 -(void)userTapClick: (UITapGestureRecognizer *)ViewTapgesture
 {
-   
     TXUserMessageViewController *usermessage = [[TXUserMessageViewController alloc]init];
     usermessage.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:usermessage animated:YES];
 
 }
+
 //注销按钮 方法
 -(void)barButtonClick
 {
-
-    
     UIAlertView *alertview = [[UIAlertView alloc]initWithTitle:@"提示" message:@"亲，注销后要重新登录哦！" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
     [alertview show];
-    
 }
+
 //获取默认个人信息
 -(void)getUserDefaultData: (UITextField *)text index:(NSInteger)_index
 {
-   
-  ///        !#worning
+    //!#worning
     NSUserDefaults *defaultUser = [NSUserDefaults standardUserDefaults];
     NSArray *key =
      @[@"area",@"workplace",@"",@"",@""];
@@ -112,6 +110,7 @@
         text.text=[defaultUser objectForKey:key[_index-100]];
     }
 }
+
 -(void)getnewHometown: (NSString *)homename
 {
     //homename =newhometown;
@@ -119,35 +118,38 @@
    // NSLog(@"chuang:%@",newhometown);
     
 }
+
 -(void)getnewWorkPlace: (NSString *)workplace{
 
     newworkplace = workplace;
 }
+
 -(void)getnewComply: (NSString *)comply{
 
     newcomplyname = comply;
 }
+
 #pragma mark --通知
 -(void)modifyHometown:(NSNotification *)notification
 {
-    
     UITextField *text = (UITextField *)[self.view viewWithTag:100];
     [text setText:notification.object];
    // NSLog(@"set: %@",text.text);
 
 }
+
 -(void)modifyWorkPlace: (NSNotification *)notification
 {
   UITextField *text = (UITextField *)[self.view viewWithTag:101];
   [text setText:notification.object];
 }
+
 -(void)modifyComply: (NSNotification *)notification
 {
     UITextField *text = (UITextField *)[self.view viewWithTag:102];
     [text setText:notification.object];
-
-
 }
+
 #pragma mark  - UITextField delegate
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
 
@@ -195,9 +197,11 @@
     }
    
 }
+
 - (void)textFieldDidBeginEditing:(UITextField *)textField{
 
 }
+
 #pragma  mark  - UIAlertView delegate
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     

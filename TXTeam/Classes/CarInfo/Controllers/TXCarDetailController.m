@@ -68,7 +68,12 @@
 }
 
 - (void)huihua{
-    RCChatViewController *chatViewController = [[RCIM sharedRCIM]createPrivateChat:[_carInfoModel.trainman_id stringValue] title:@"自问自答" completion:^(){
+    //融云id
+    NSString *rongYunID =[[NSString alloc] initWithFormat:@"T%@",[_carInfoModel.trainman_id stringValue]];
+    //会话主题
+    NSString *chatTittle = [[NSString alloc] initWithFormat:@"%@-%@",_carInfoModel.begin_area,_carInfoModel.end_area];
+    MyLog(@"rongyunID:%@",rongYunID);
+    RCChatViewController *chatViewController = [[RCIM sharedRCIM]createPrivateChat:rongYunID title:chatTittle completion:^(){
         // 创建 ViewController 后，调用的 Block，可以用来实现自定义行为。
         
     }];

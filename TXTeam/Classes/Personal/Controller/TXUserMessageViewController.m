@@ -19,33 +19,29 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-   self.title = @"用户资料";
+    self.title = @"用户资料";
     self.view.backgroundColor = kBackgroundColor;
-   // [self initMainview];
+    // [self initMainview];
     [self initTableview];
     
 }
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:YES];
-//添加通知
+    //添加通知
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(modifyName:) name:@"name" object:nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(modifyTel:) name:@"tel" object:nil];
-   
-
 }
 -(void)initTableview{
     
     dataArray = @[@"账号：",@"姓名:",@"性别:",@"绑定电话:",@"密码"];
-    _tableview = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, (dataArray.count-1)*53.2) style:UITableViewStylePlain];
+    _tableview = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, (dataArray.count+2)*44) style:UITableViewStylePlain];
     _tableview.separatorStyle =UITableViewCellSeparatorStyleSingleLine;
     _tableview.separatorColor = [UIColor grayColor];
-   // _tableview.backgroundColor = kBackgroundColor;
+     _tableview.backgroundColor = kBackgroundColor;
     _tableview.dataSource = self;
     _tableview.delegate = self;
     _tableview.bounces = NO;
     [self. view addSubview:_tableview];
-
-
 }
 
 - (void)getUserDefaultData:(UITableViewCell *)cell indexPath:(NSIndexPath *)indepath
@@ -54,6 +50,7 @@
     NSArray *key = @[@"tel",@"name",@"sex",@"tel",@"nil"];
     cell.detailTextLabel.text = [defaults objectForKey:key[indepath.row]];
 }
+
 - (UITableViewCell *)cellForRow:(NSInteger)row
 {
     return [_tableview cellForRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:0]];
@@ -63,6 +60,7 @@
     UIActionSheet *revisesex = [[UIActionSheet alloc]initWithTitle:@"性别" delegate:self cancelButtonTitle:nil destructiveButtonTitle:@"男" otherButtonTitles:@"女", nil];
     [revisesex showInView:self.view];
 }
+
 #pragma mark - 通知 方法
 -(void)modifyName:(NSNotification *)notification{
     
@@ -77,6 +75,7 @@
     cell2.detailTextLabel.text = notification.object;
     
 }
+
 #pragma mark - UIActionSheet delegate
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
  
@@ -89,16 +88,16 @@
     //[MMProgressHUD setPresentationStyle:MMProgressHUDPresentationStyleNone];
     //请求修改性别
     [self reviseData_Sex:sex];
-
 }
+
 #pragma mark -- 加载数据
 -(void)reviseData_Sex:(NSString *)_sex{
 
     [MMProgressHUD showWithStatus:@"加载中..."];
     
-    NSDictionary *parm = @{@"sex":_sex};
-    [TXDataService POST:updateSex param:parm completionBlock:^(id responseObject, NSError *error) {
-        NSLog(@"$%@",responseObject);
+    NSDictionary *param = @{@"sex":_sex};
+    [TXDataService POST:updateSex param:param isCache:NO caChetime:0 completionBlock:^(id responseObject, NSError *error) {
+            MyLog(@"$%@",responseObject);
         if (error) {
             [MMProgressHUD dismissWithError:@"修改失败"];
             return ;
@@ -114,13 +113,11 @@
         }
         [MMProgressHUD dismiss];
     }];
-
-
 }
+
 #pragma  mark - UItableview datasource and delegate
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return dataArray.count;
-
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -138,9 +135,12 @@
     [self getUserDefaultData:cell indexPath:indexPath];
     cell.backgroundColor = kBackgroundColor;
     return cell;
-    
-
 }
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return 44;
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];

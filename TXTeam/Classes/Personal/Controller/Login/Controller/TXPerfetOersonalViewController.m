@@ -139,10 +139,12 @@
 -(void)Name_data
 {
     NSDictionary *parm = @{@"name":_Name};
-    [TXDataService POST:updateName param:parm completionBlock:^(id responseObject, NSError *error) {
+    [TXDataService POST:updateName param:parm isCache:NO caChetime:0 completionBlock:^(id responseObject, NSError *error) {
+        
         if ([responseObject objectForKey:@"success"]) {
             NSLog(@"responseobject:%@",[responseObject objectForKey:@"success"]);
-                    }
+        }
+        
     }];
     
 }
@@ -151,7 +153,7 @@
     
     
     NSDictionary *parm = @{@"sex":_sex};
-    [TXDataService POST:updateSex param:parm completionBlock:^(id responseObject, NSError *error) {
+    [TXDataService POST:updateSex param:parm isCache:YES caChetime:0 completionBlock:^(id responseObject, NSError *error) {
         if ([responseObject objectForKey:@"success"]) {
             NSLog(@"Revise Sex success: %@",[responseObject objectForKey:@"success"]);
             NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -166,7 +168,7 @@
 -(void)HomeTown_Data {
     //NSLog(@"dddddd:%@",_area_id);
     NSDictionary *dic= @{@"area_id":_area_id};
-    [TXDataService POST:updateArea param:dic completionBlock:^(id responseObject, NSError *error) {
+    [TXDataService POST:updateArea param:dic isCache:YES caChetime:0 completionBlock:^(id responseObject, NSError *error) {
         if ([responseObject objectForKey:@"success"]) {
             NSLog(@"responObject///:%@",[responseObject objectForKey:@"success"]);
         }

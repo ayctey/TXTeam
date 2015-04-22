@@ -16,40 +16,39 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"Title bar.png"] forBarMetrics:UIBarMetricsDefault];
+//    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"Title bar.png"] forBarMetrics:UIBarMetricsDefault];
     [self setNavigationTitle:@"会话" textColor:[UIColor blackColor]];
     // 隐藏融云导航左右按钮
        self.navigationItem.leftBarButtonItem = nil;
        self.navigationItem.rightBarButtonItem = nil;
 }
-//隐藏了无会话列表的背景图
--(BOOL)showCustomEmptyBackView {
-    
-    return YES;
-   
+////隐藏了无会话列表的背景图
+//-(BOOL)showCustomEmptyBackView {
+//    
+//    return YES;
+//}
 
-}
--(void)leftBarButtonItemPressed:(id)sender
-{
-    [super leftBarButtonItemPressed:sender];
-}
+//-(void)leftBarButtonItemPressed:(id)sender
+//{
+//    [super leftBarButtonItemPressed:sender];
+//}
 
--(void)rightBarButtonItemPressed:(id)sender
-{
-    // 跳转好友列表界面，可是是融云提供的 UI 组件，也可以是自己实现的UI
-    RCSelectPersonViewController *temp = [[RCSelectPersonViewController alloc]init];
-    // 控制多选
-    temp.isMultiSelect = YES;
-    UINavigationController * nav = [[UINavigationController alloc]initWithRootViewController:temp];
-    
-    // 导航和的配色保持一直
-    UIImage *image= [self.navigationController.navigationBar backgroundImageForBarMetrics:UIBarMetricsDefault];
-    [nav.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
-    temp.navigationController.navigationBar.barTintColor=[UIColor redColor];
-    temp.delegate = self;
-    // [self presentModalViewController:nav animated:YES];
-    [self presentViewController:nav animated:YES completion:nil];
-}
+//-(void)rightBarButtonItemPressed:(id)sender
+//{
+//    // 跳转好友列表界面，可是是融云提供的 UI 组件，也可以是自己实现的UI
+//    RCSelectPersonViewController *temp = [[RCSelectPersonViewController alloc]init];
+//    // 控制多选
+//    temp.isMultiSelect = YES;
+//    UINavigationController * nav = [[UINavigationController alloc]initWithRootViewController:temp];
+//    
+//    // 导航和的配色保持一直
+//    UIImage *image= [self.navigationController.navigationBar backgroundImageForBarMetrics:UIBarMetricsDefault];
+//    [nav.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
+//    temp.navigationController.navigationBar.barTintColor=[UIColor redColor];
+//    temp.delegate = self;
+//    // [self presentModalViewController:nav animated:YES];
+//    [self presentViewController:nav animated:YES completion:nil];
+//}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -82,4 +81,5 @@
     chat.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:chat animated:YES];
 }
+
 @end

@@ -17,6 +17,7 @@
 //忘记密码、修改密码 短信验证
 #import "TXMessageAuthenticationController.h"
 #import "TXSettingPasswordViewController.h"
+#import "TXLoginRCIM.h"
 #import "TXUserModel.h"
 #import "TXDataService.h"
 #import "RCIM.h"
@@ -188,23 +189,26 @@
         //发送登录请求
         NSDictionary *param =  @{@"account":userEmail,
                                  @"password":userPSWord};
-        [TXDataService POST:_login param:param completionBlock:^(id responseObject, NSError *error) {
-            if (error || ![[responseObject objectForKey:@"success"] isEqual:@(1)]) {//登录失败
+        [TXDataService POST:_login param:param isCache:NO caChetime:0 completionBlock:^(id responseObject, NSError *error) {
+            if (error || ![[responseObject objectForKey:@"success"] isEqual:@(1)]) {
+                //登录失败
                 [MMProgressHUD dismissWithError:@"登录失败！"];
                 return ;
             }
             //注册融云
-            [self registerRongYun];
-                //登录成功
-                //保存信息
-                NSDictionary *data = [responseObject objectForKey:@"data"];
-                TXUserModel *userModel = [[TXUserModel alloc] initWithDataDic:data];
-                [userModel save];
-                [self setDefaultUser:userEmail  pwd:userPSWord];
-                //进入主页面
-                MainViewController *mainview=[[MainViewController alloc]init];
-                [self.navigationController setNavigationBarHidden:YES];
-                [self.navigationController pushViewController:mainview animated:YES];
+//            [self registerRongYun];
+            [[TXLoginRCIM shareLoginRCIM] connectRCIM];
+            
+            //登录成功保存信息
+            NSDictionary *data = [responseObject objectForKey:@"data"];
+            TXUserModel *userModel = [[TXUserModel alloc] initWithDataDic:data];
+            [userModel save];
+            [self setDefaultUser:userEmail  pwd:userPSWord];
+            //进入主页面
+            MainViewController *mainview=[[MainViewController alloc]init];
+            [self.navigationController setNavigationBarHidden:YES];
+            [self.navigationController pushViewController:mainview animated:YES];
+            
             [MMProgressHUD dismiss];
             
         }];
@@ -214,8 +218,8 @@
 //拿到融云服务器token
 -(void)registerRongYun {
     
-    [TXDataService GET:GetRongyunToken param:nil completionBlock:^(id responseObject, NSError *error) {
-        MyLog(@"%%%%%%%%%@  %@",responseObject,error);
+    [TXDataService GET:GetRongyunToken param:nil isCache:NO caChetime:0 completionBlock:^(id responseObject, NSError *error) {
+        MyLog(@"%@  %@",responseObject,error);
         if (error) {
             NSLog(@"***********%@",error);
             [MMProgressHUD dismissWithError:@"登录失败！"];
@@ -238,8 +242,6 @@
         return ;
     }];
     NSLog(@"++++___+++");
-    
-
 }
 
 -(void)setDefaultUser:(NSString*)user pwd:(NSString*)pwd

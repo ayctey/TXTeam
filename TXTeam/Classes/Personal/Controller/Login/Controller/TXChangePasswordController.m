@@ -89,7 +89,7 @@
             
             //上传新密码
             NSDictionary *dic =@{@"password":newPasswordField.text};
-            [TXDataService POST:updataPass param:dic completionBlock:^(id responseObject, NSError *error) {
+            [TXDataService POST:updataPass param:dic isCache:NO caChetime:0 completionBlock:^(id responseObject, NSError *error) {
             if ([responseObject objectForKey:@"success"]) {
                // NSLog(@"修改密码成功！！");
                 UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提示" message:@"您的密码修改成功！请重新登录" delegate:self cancelButtonTitle:@"确定" otherButtonTitles: nil];

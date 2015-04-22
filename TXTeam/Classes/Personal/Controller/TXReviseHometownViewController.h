@@ -16,6 +16,7 @@
     
    
 }
+
 //选择的区id
 @property (strong ,nonatomic)NSString *area_id;
 //显示省、市、区
