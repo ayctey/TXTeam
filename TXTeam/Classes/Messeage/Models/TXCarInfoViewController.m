@@ -66,8 +66,6 @@
         [self searchWithNewDeparture_time];
         tool.beginSearch = NO;
     }
-    
-    
 }
 
 #pragma mark - 加载数据
@@ -99,7 +97,7 @@
     //将值传给TXTool
     [TXTool sharedTXTool].begin_area_id = @"440106";
     [TXTool sharedTXTool].end_area_id = @"440902";
-    [TXTool sharedTXTool].departure_time =@"2015-04-19";
+    [TXTool sharedTXTool].departure_time =@"2015-04-24";
     //请求数据
     [self searchWithNewDeparture_time];
 }

@@ -58,13 +58,7 @@ static id _instance;
 //登陆融云
 -(void)connectRCIM
 {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *token = [defaults objectForKey:@"token"];
-    MyLog(@"token:%@",token);
-    //获取融云令牌
-    if ([token length] == 0) {
-        [self getRCIMToken];
-    }
+     NSString *token = [self getRCIMToken];
     
     //短信验证服务器连接
     [SMS_SDK registerApp:SMSAppKey
@@ -74,31 +68,49 @@ static id _instance;
     [RCIM initWithAppKey:RONGCLOUD_IM_APPKEY deviceToken:nil];
     
     MyLog(@"token:%@",token);
-    
-    // 连接融云服务器。
-    [RCIM connectWithToken:token completion:^(NSString *userId) {
-        // 此处处理连接成功。
-        MyLog(@"Login successfully with userId: %@.", userId);
-    } error:^(RCConnectErrorCode status) {
-        // 此处处理连接错误。
-        MyLog(@"Login failed.");
-    }];
+    if (![token length] == 0) {
+        // 连接融云服务器。
+        [RCIM connectWithToken:token completion:^(NSString *userId) {
+            // 此处处理连接成功。
+            MyLog(@"Login successfully with userId: %@.", userId);
+        } error:^(RCConnectErrorCode status) {
+            // 此处处理连接错误。
+            MyLog(@"Login failed.");
+        }];
+    }
 }
 
 //获取融云Token
--(void)getRCIMToken
+-(NSString *)getRCIMToken
 {
-    [TXDataService POST:GetRongyunToken param:nil isCache:NO caChetime:0 completionBlock:^(id responseObject, NSError *error) {
-        NSDictionary *dic = (NSDictionary *)responseObject;
-        NSString *token = [dic objectForKey:@"token"];
-        NSString *userRongYunID = [dic objectForKey:@"userId"];
-        if (error==nil) {
-            //保存token和融云ID在本地
-            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-            [defaults setValue:token forKey:@"token"];
-            [defaults setValue:userRongYunID forKey:@"userRongYunID"];
-        }
-    } ];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *token = [defaults objectForKey:@"token"];
+    MyLog(@"token:%@",token);
+    //获取融云令牌
+    if ([token length] == 0) {
+        [TXDataService POST:GetRongyunToken param:nil isCache:NO caChetime:0 completionBlock:^(id responseObject, NSError *error) {
+            NSDictionary *dic = (NSDictionary *)responseObject;
+            NSString *token = [dic objectForKey:@"token"];
+            NSString *userRongYunID = [dic objectForKey:@"userId"];
+            if (error==nil) {
+                //保存token和融云ID在本地
+                NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+                [defaults setValue:token forKey:@"token"];
+                [defaults setValue:userRongYunID forKey:@"userRongYunID"];
+                
+                //登陆融云
+                [RCIM connectWithToken:token completion:^(NSString *userId) {
+                    // 此处处理连接成功。
+                    MyLog(@"Login successfully with userId: %@.", userId);
+                } error:^(RCConnectErrorCode status) {
+                    // 此处处理连接错误。
+                    MyLog(@"Login failed.");
+                }];
+            }
+        } ];
+    }
+
+    return  token;
 }
 
 

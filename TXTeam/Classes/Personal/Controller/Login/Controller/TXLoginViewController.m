@@ -241,7 +241,6 @@
         [MMProgressHUD dismissWithError:@"登录失败！"];
         return ;
     }];
-    NSLog(@"++++___+++");
 }
 
 -(void)setDefaultUser:(NSString*)user pwd:(NSString*)pwd
@@ -254,6 +253,7 @@
     [[NSUserDefaults standardUserDefaults] setObject:pwd forKey:@"password"];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
+
 - (void)setUserDefaultValue:(id)value forKey:(NSString *)key
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -323,13 +323,12 @@
     //#endif//CHECK_PASSWORD_ENABLE
     
     return YES;
-    
 }
+
 #pragma mark - RegisterBtnClicked Method
 //注册按钮方法
 - (void)prepareForSignup:(id)sender {
-    
-    
+
     self.navigationController.navigationBarHidden =NO;
     
     
@@ -338,7 +337,8 @@
     message.Cool = @"yes";
     [self.navigationController pushViewController:message animated:YES];
     
-    }
+}
+
 #pragma mark - UITextField delegate
 - (void)textFieldDidBeginEditing:(UITextField *)textField{
     
@@ -394,6 +394,7 @@
     
     [self invalidateFirstResponders];
 }
+
 #pragma mark - PrivateMethod
 - (UIImageView *)ImageViewWithFrame:(CGRect)frame Image:(NSString *)image In:(UIView *)view
 {
@@ -506,7 +507,6 @@
                 [self.allFriendsArray addObject:userInfo];
             }
             
-            //----为刘备or吕蒙不同环境预留。----//
             typeof(self) __weak weakSelf = self;
             
             //使用DEMO注意：更换appkey，一定要更换对应的连接token，如果token未做变化，默认会从融云测试环境获取，照成appkey和token不一致

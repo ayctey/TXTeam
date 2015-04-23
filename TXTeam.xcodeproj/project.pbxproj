@@ -341,7 +341,7 @@
 		F25BB9861A60CC8200612B64 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		F26934851A56CFFC00E9D6C1 /* TXTeam.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TXTeam.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F26934891A56CFFC00E9D6C1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		F26934951A56CFFC00E9D6C1 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		F26934951A56CFFC00E9D6C1 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = ../Images.xcassets; sourceTree = "<group>"; };
 		F26934981A56CFFC00E9D6C1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		F269349E1A56CFFC00E9D6C1 /* TXTeamTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TXTeamTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F26934A31A56CFFC00E9D6C1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -767,7 +767,6 @@
 			isa = PBXGroup;
 			children = (
 				F25BB99B1A60CCE100612B64 /* lib */,
-				F26934951A56CFFC00E9D6C1 /* Images.xcassets */,
 				F26934971A56CFFC00E9D6C1 /* LaunchScreen.xib */,
 				F26934891A56CFFC00E9D6C1 /* Info.plist */,
 			);
@@ -1166,6 +1165,7 @@
 		F26935381A56D5B900E9D6C1 /* Resourse */ = {
 			isa = PBXGroup;
 			children = (
+				F26934951A56CFFC00E9D6C1 /* Images.xcassets */,
 				A5D1AFA11A64185300F71231 /* imageClient */,
 			);
 			path = Resourse;

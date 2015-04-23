@@ -14,9 +14,13 @@
 #import "TXLoginViewController.h"
 #import "TXDataService.h"
 #import "TXLoginRCIM.h"
+#import "TXUserModel.h"
 #import "Common.h"
 
 @interface AppDelegate ()
+{
+    BOOL isLogined;
+}
 
 @end
 
@@ -30,38 +34,27 @@
     //实施网络状况监听
     [self setNetworkMonitor];
     
+    if (!isLogined) {
+        //登陆
+        [self isLogin];
+    }
+    
     //设置缓存大小
     NSURLCache *URLCache = [[NSURLCache alloc] initWithMemoryCapacity:8 * 1024 * 1024 diskCapacity:0 diskPath:nil];
     [NSURLCache setSharedURLCache:URLCache];
     
-    //连接短信验证码
-    [self connectSMS];
-    
     //连接融云即时通讯
     [self connectRCIM:application];
     
-    TXLoginViewController *loginController=[[TXLoginViewController alloc]init];
-    TXBaseNavController *navigotioncontroller =[[TXBaseNavController alloc]initWithRootViewController:loginController];
-    // 设置背景颜色为黑色。
-    [navigotioncontroller.navigationBar setBackgroundColor:[UIColor blackColor]];
-    
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
-    self.window.rootViewController = navigotioncontroller;
     return YES;
-}
-
-- (void)connectSMS {
-    //
-    [SMS_SDK registerApp:SMSAppKey
-              withSecret:SMSAppSecret];
 }
 
 - (void)connectRCIM:(UIApplication *)application {
     //初始化融云 SDk,传入app key,deviceToken 暂时胃口，等待获取权限
     [RCIM initWithAppKey:RONGCLOUD_IM_APPKEY deviceToken:nil];
     
-        
     [application setStatusBarStyle:UIStatusBarStyleLightContent];
     //设置苹果push通知
     if ([application respondsToSelector:@selector(registerUserNotificationSettings:)]) {
@@ -162,6 +155,9 @@
     if ([conn currentReachabilityStatus] != NotReachable) {
         [self isLogin];
     } else {
+        //把登陆状态设置为NO
+        isLogined = NO;
+        
         // 没有网络
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"断网啦！" delegate:self cancelButtonTitle:@"好" otherButtonTitles: nil];
         [alert show];
@@ -196,6 +192,8 @@
                 NSDictionary *dic = responseObject;
                 int success = [[dic objectForKey:@"success"] intValue];
                 if (success) {
+                    //把登陆状态设置为Yes
+                    isLogined = YES;
                     
                     //链接融云
                     [[TXLoginRCIM shareLoginRCIM] connectRCIM];
@@ -203,19 +201,9 @@
                     MyLog(@"%@",[responseObject objectForKey:@"data"]);
                     NSDictionary *data = [responseObject objectForKey:@"data"];
                     
-                    //保存用户信息在本地
-                    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-                    [defaults setValue:[data objectForKey:@"account"] forKey:@"account"];
-                    [defaults setValue:[data objectForKey:@"birthday"] forKey:@"birthday"];
-                    [defaults setValue:[data objectForKey:@"intro"] forKey:@"intro"];
-                    [defaults setValue:[data objectForKey:@"isValid"] forKey:@"isValid"];
-                    [defaults setValue:[data objectForKey:@"motorcade_Name"] forKey:@"motorcade_Name"];
-                    [defaults setValue:[data objectForKey:@"tel"] forKey:@"tel"];
-                    [defaults setValue:[data objectForKey:@"password"] forKey:@"password"];
-                    [defaults setValue:[data objectForKey:@"protrait_Url"] forKey:@"protrait_Url"];
-                    [defaults setValue:[data objectForKey:@"sex"] forKey:@"sex"];
-                    [defaults setValue:[data objectForKey:@"trainman_ID"] forKey:@"trainman_ID"];
-                    [defaults setValue:[data objectForKey:@"trainman_Name"] forKey:@"trainman_Name"];
+                    //保存用户信息
+                    TXUserModel *userModel = [[TXUserModel alloc] initWithDataDic:data];
+                    [userModel save];
                     
                     //进入主页
                     [self pushMaincomtroller];
