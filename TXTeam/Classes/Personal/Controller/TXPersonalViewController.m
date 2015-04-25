@@ -15,8 +15,14 @@
 #import "TXReviseCompanyViewController.h"
 #import "TXAboutViewController.h"
 #import "TXLoginViewController.h"
+#import "EGOCache.h"
+
 #define userView_height 80
+
 @interface TXPersonalViewController ()
+{
+    NSArray *userData;
+}
 
 @end
 
@@ -54,7 +60,22 @@
     userView.frame = CGRectMake(0, kNavigationH, kScreenWidth, userView_height);
     userView.backgroundColor = kBackgroundColor;
     [userView addGestureRecognizer:tapGesture];
+    
+    //获取数据
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *userName = [defaults objectForKey:@"name"];
+    NSString *tel = [defaults objectForKey:@"tel"];
+    NSString *url = [defaults objectForKey:@"protrait_url"];
+    
+    //填充数据
+    userView.userName.text = userName;
+    userView.accout.text = tel;
+    NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:url]];
+    userView.headImage.image = [UIImage imageWithData:imageData];
     [self.view addSubview:userView];
+    
+    //获取用户数据
+    [self getUserDefaultData];
     
     NSArray *title_arr = @[@"家乡",@"工作所在地",@"企业",@"帮助",@"关于"];
     for (int i = 0; i < 5; i++) {
@@ -74,8 +95,8 @@
         hometowntextfield.borderStyle =UITextBorderStyleNone;
         hometowntextfield.tag = 100+i;
         textfieldTag = hometowntextfield.tag;
-       // hometowntextfield.text =arrayname[i];
-        [self getUserDefaultData:hometowntextfield index:i];
+        MyLog(@"userdata:%@",userData);
+        hometowntextfield.text = userData[i];
         hometowntextfield.delegate =self;
         [view addSubview: hometowntextfield];
     }
@@ -98,17 +119,20 @@
 }
 
 //获取默认个人信息
--(void)getUserDefaultData: (UITextField *)text index:(NSInteger)_index
+-(void)getUserDefaultData
 {
-    //!#worning
+    //获取用户数据
     NSUserDefaults *defaultUser = [NSUserDefaults standardUserDefaults];
-    NSArray *key =
-     @[@"area",@"workplace",@"",@"",@""];
-    //单例传值
-    _index = textfieldTag;
-    if (text.tag ==_index) {
-        text.text=[defaultUser objectForKey:key[_index-100]];
-    }
+    
+    //家乡
+    NSString *homeTown = [[NSString alloc] initWithFormat:@"%@ %@",[defaultUser objectForKey:@"home_city"],[defaultUser objectForKey:@"home_area"]];
+    
+    //工作地
+    NSString *workPlace = [[NSString alloc] initWithFormat:@"%@ %@",[defaultUser objectForKey:@"work_city"],[defaultUser objectForKey:@"work_area"]];
+    MyLog(@"homeTown:%@ workPlace%@",homeTown,workPlace);
+    
+    userData =
+     @[homeTown,workPlace,@"",@"",@""];
 }
 
 -(void)getnewHometown: (NSString *)homename
@@ -206,6 +230,15 @@
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     
     if (buttonIndex == 1) {
+        //清空密码
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        [defaults removeObjectForKey:@"password"];
+        [defaults removeObjectForKey:@"token"];
+        [defaults removeObjectForKey:@"isFirstLogin"];
+        
+        //清空所有缓存
+        [[EGOCache globalCache] clearCache];
+        
         TXLoginViewController *loginviewcntroller = [[TXLoginViewController alloc]init];
         loginviewcntroller.hidesBottomBarWhenPushed =  YES;
           [self.navigationController pushViewController:loginviewcntroller animated:YES];

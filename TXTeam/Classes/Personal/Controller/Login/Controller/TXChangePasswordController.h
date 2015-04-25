@@ -11,4 +11,7 @@
 
 @interface TXChangePasswordController : TXBaseViewController<UITextFieldDelegate,UIAlertViewDelegate>
 
+@property (nonatomic,strong) NSString *tel;   //电话
+@property BOOL isModifyBytel;
+
 @end

@@ -21,8 +21,11 @@ enum WhichViewController{
     enum WhichViewController viewController;
    
 }
+
 @property (nonatomic,strong) NSString *phonenumbs;
-@property(nonatomic,strong)  NSString *Cool;
+@property (nonatomic,strong)  NSString *Cool;
+@property BOOL isLogin;
+
 - (void)pushTo:(enum WhichViewController)vc;
 -(void)getUserPhonenums:(NSString *)numbers;
 @end

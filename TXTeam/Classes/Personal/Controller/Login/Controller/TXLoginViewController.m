@@ -21,6 +21,8 @@
 #import "TXUserModel.h"
 #import "TXDataService.h"
 #import "RCIM.h"
+#import "NSString+MD5.h"
+#import "EGOCache.h"
 
 @interface TXLoginViewController ()<RCIMFriendsFetcherDelegate, RCIMUserInfoFetcherDelegagte>
 
@@ -186,6 +188,18 @@
         [MMProgressHUD setPresentationStyle:MMProgressHUDPresentationStyleShrink];
         [MMProgressHUD showWithTitle:@"" status:@"正在登录…" cancelBlock:nil];
         
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        NSString *oldAccount = [defaults objectForKey:@"account"];
+        //判断登陆账号与上一次登陆账号是否一样,不一样清空所有缓存
+        if (![userEmail isEqualToString:oldAccount]) {
+            NSDictionary *dictionary = [defaults dictionaryRepresentation];
+            for(NSString* key in [dictionary allKeys]){
+                [defaults removeObjectForKey:key];
+                [defaults synchronize];
+            }
+            [[EGOCache globalCache] clearCache];
+        }
+
         //发送登录请求
         NSDictionary *param =  @{@"account":userEmail,
                                  @"password":userPSWord};
@@ -195,15 +209,15 @@
                 [MMProgressHUD dismissWithError:@"登录失败！"];
                 return ;
             }
+            
             //注册融云
-//            [self registerRongYun];
             [[TXLoginRCIM shareLoginRCIM] connectRCIM];
             
             //登录成功保存信息
             NSDictionary *data = [responseObject objectForKey:@"data"];
             TXUserModel *userModel = [[TXUserModel alloc] initWithDataDic:data];
             [userModel save];
-            [self setDefaultUser:userEmail  pwd:userPSWord];
+            
             //进入主页面
             MainViewController *mainview=[[MainViewController alloc]init];
             [self.navigationController setNavigationBarHidden:YES];
@@ -243,17 +257,6 @@
     }];
 }
 
--(void)setDefaultUser:(NSString*)user pwd:(NSString*)pwd
-{
-    if(user == nil)
-    {
-        return;
-    }
-    [[NSUserDefaults standardUserDefaults] setObject:user forKey:@"userName"];
-    [[NSUserDefaults standardUserDefaults] setObject:pwd forKey:@"password"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-}
-
 - (void)setUserDefaultValue:(id)value forKey:(NSString *)key
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -288,6 +291,7 @@
 {
     self.navigationController.navigationBarHidden=NO;
     TXMessageAuthenticationController *CheckMessage =[[TXMessageAuthenticationController alloc]init];
+    CheckMessage.isLogin = NO;
     [CheckMessage pushTo:VCChangePasswordController];
     [self.navigationController pushViewController:CheckMessage animated:YES];
     

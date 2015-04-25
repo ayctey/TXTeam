@@ -11,11 +11,8 @@
 
 @interface TXUserMessageViewController : TXBaseViewController<UITableViewDataSource,UITableViewDelegate,UIActionSheetDelegate>
 {
-
-    
     UITableView *_tableview ;
     NSArray *dataArray ;
     NSString *sex;
-
 }
 @end

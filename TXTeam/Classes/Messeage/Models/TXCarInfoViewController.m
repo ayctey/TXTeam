@@ -89,15 +89,24 @@
 
 - (void)getDate {
     //获取当前时间
-//    NSDate *date = [NSDate date];
-//    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-//    [formatter setDateFormat:@"yyyy-MM-dd"];
-//    NSString *dateString = [formatter stringFromDate:date];
+    NSDate *date = [NSDate date];
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"yyyy-MM-dd"];
+    
+    NSTimeInterval interval = 24*60*60;
+    //日期加一
+    NSString *dateString = [formatter stringFromDate:[date initWithTimeInterval:interval sinceDate:date]];
+    MyLog(@"dateString%@",dateString);
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *homeTown_ID = [defaults objectForKey:@"area_id"];
+    NSString *workPlace_ID = [defaults objectForKey:@"workplace"];
+    MyLog(@"homeTown:%@,workPlace:%@",homeTown_ID,workPlace_ID);
     
     //将值传给TXTool
-    [TXTool sharedTXTool].begin_area_id = @"440106";
-    [TXTool sharedTXTool].end_area_id = @"440902";
-    [TXTool sharedTXTool].departure_time =@"2015-04-24";
+    [TXTool sharedTXTool].begin_area_id = workPlace_ID;
+    [TXTool sharedTXTool].end_area_id = homeTown_ID;
+    [TXTool sharedTXTool].departure_time =dateString;
     //请求数据
     [self searchWithNewDeparture_time];
 }

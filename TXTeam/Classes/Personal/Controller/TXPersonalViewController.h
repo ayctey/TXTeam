@@ -16,6 +16,7 @@
     NSString *newworkplace;
     NSString *newcomplyname;
    }
+
 -(void)getnewHometown: (NSString *)homename;
 -(void)getnewWorkPlace: (NSString *)workplace;
 -(void)getnewComply: (NSString *)comply;

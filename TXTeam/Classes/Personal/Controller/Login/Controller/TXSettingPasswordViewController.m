@@ -11,6 +11,7 @@
 #import "InputHelper.h"
 #import "TXDataService.h"
 #import "Common.h"
+#import "NSString+MD5.h"
 
 @interface TXSettingPasswordViewController ()
 
@@ -134,10 +135,14 @@
 
 #pragma mark - 加载数据
 -(void)Resgiter_Data{
-    NSLog(@"用户名:%@",_accountField.text);
-    NSLog(@"密码:%@",confirmPasswordField.text);
-    NSLog(@"注册手机号码:%@",phoneNumbers);
-    NSDictionary *dic =@{@"account":_accountField.text,@"password":confirmPasswordField.text,@"tel":phoneNumbers};
+    
+    MyLog(@"用户名:%@",_accountField.text);
+    MyLog(@"密码:%@",confirmPasswordField.text);
+    MyLog(@"注册手机号码:%@",phoneNumbers);
+    
+    //加密密码
+    NSString *password = [confirmPasswordField.text MD5Hash];
+    NSDictionary *dic =@{@"account":_accountField.text,@"password":password,@"tel":phoneNumbers};
     [TXDataService POST:register param:dic isCache:NO caChetime:0 completionBlock:^(id responseObject, NSError *error) {
         MyLog(@"ssff:%@",[responseObject objectForKey:@"result"]);
         NSNumber *number =[responseObject objectForKey:@"result"];

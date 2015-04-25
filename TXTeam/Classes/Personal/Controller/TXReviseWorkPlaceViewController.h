@@ -10,7 +10,6 @@
 @interface TXReviseWorkPlaceViewController : TXBaseViewController
 
 {
-
     UIButton *workbtn;
     NSString *_area_id;
 }

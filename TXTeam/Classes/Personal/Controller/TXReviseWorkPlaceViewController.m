@@ -51,17 +51,22 @@
 
 -(void)initView
 {
-    
     UIView *homeview = [[UIView alloc]initWithFrame:CGRectMake(0, kNavigationH, kScreenWidth, 50)];
     homeview.backgroundColor = kBackgroundColor;
     [self.view addSubview:homeview];
-    UILabel *lab =[[UILabel alloc]initWithFrame:CGRectMake(10, 10, kScreenWidth*0.3+30, 30)];
+    UILabel *lab =[[UILabel alloc]initWithFrame:CGRectMake(10, 10, kScreenWidth*0.33, 30)];
     lab.text = @"工作所在地：";
     [homeview addSubview:lab];
     
-     workbtn = [[UIButton alloc]initWithFrame:CGRectMake(kScreenWidth*0.31, 0, kScreenWidth*0.8, 50)];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *province = [defaults objectForKey:@"work_province"];
+    NSString *city = [defaults objectForKey:@"work_city"];
+    NSString *area = [defaults objectForKey:@"work_area"];
+    NSString *workPlace = [[NSString alloc] initWithFormat:@"%@ %@ %@",province,city,area];
+    
+     workbtn = [[UIButton alloc]initWithFrame:CGRectMake(kScreenWidth*0.32, 0, kScreenWidth*0.6, 50)];
     [workbtn addTarget:self action:@selector(workbtnClick) forControlEvents:UIControlEventTouchUpInside];
-    [workbtn setTitle:_formalworkplace forState:UIControlStateNormal];
+    [workbtn setTitle:workPlace forState:UIControlStateNormal];
     [workbtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     // homebtn.backgroundColor =[UIColor redColor];
     workbtn.tag = 101;
@@ -85,8 +90,8 @@
 
 -(void)workbtnClick
 {
-       TXProvinceController *province = [[TXProvinceController alloc] init];
-       [self.navigationController pushViewController:province animated:YES];
+    TXProvinceController *province = [[TXProvinceController alloc] init];
+    [self.navigationController pushViewController:province animated:YES];
 }
 
 #pragma mark- 加载数据
@@ -106,6 +111,7 @@
             return ;
         }
         MyLog(@"修改成功！");
+        [MMProgressHUD dismiss];
     }];
 }
 
@@ -113,7 +119,5 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
-
 
 @end

@@ -7,8 +7,9 @@
 //
 //菜单控制器
 #import <UIKit/UIKit.h>
+#import "EAIntroView.h"
 
-@interface MainViewController : UITabBarController
+@interface MainViewController : UITabBarController<EAIntroDelegate>
 {
     UIButton *selectedBtn;
 

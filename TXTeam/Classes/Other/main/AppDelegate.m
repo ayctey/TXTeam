@@ -46,6 +46,10 @@
     //连接融云即时通讯
     [self connectRCIM:application];
     
+    //短信验证服务器连接
+    [SMS_SDK registerApp:SMSAppKey
+              withSecret:SMSAppSecret];
+    
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     return YES;

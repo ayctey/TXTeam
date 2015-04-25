@@ -10,6 +10,8 @@
 #import "Common.h"
 #import "TXDataService.h"
 #import "TXLoginViewController.h"
+#import "NSString+MD5.h"
+
 @interface TXChangePasswordController ()
 {
     UITextField *newPasswordField;
@@ -32,7 +34,7 @@
 {
     UIView *newPwView = [[UIView alloc] init];
     newPwView.backgroundColor = kBackgroundColor;
-    newPwView.frame = CGRectMake(0, 10, kScreenWidth, 40);
+    newPwView.frame = CGRectMake(0, kNavigationH+10, kScreenWidth, 40);
     [self.view addSubview:newPwView];
     
     newPasswordField = [[UITextField alloc] init];
@@ -43,7 +45,7 @@
     
     UIView *confirmPwView = [[UIView alloc] init];
     confirmPwView.backgroundColor = kBackgroundColor;
-    confirmPwView.frame = CGRectMake(0, 10+40+10, kScreenWidth, 40);
+    confirmPwView.frame = CGRectMake(0, kNavigationH+10+40+10, kScreenWidth, 40);
     [self.view addSubview:confirmPwView];
     
     confirmPasswordField = [[UITextField alloc] init];
@@ -55,11 +57,10 @@
     UIButton *submitBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [submitBtn setTitle:@"完 成" forState:UIControlStateNormal];
     [submitBtn setBackgroundColor:[UIColor redColor]];
-    [submitBtn setFrame:CGRectMake((kScreenWidth-200)/2, 100+20, 200, 30)];
+    [submitBtn setFrame:CGRectMake((kScreenWidth-200)/2, kNavigationH+100+20, 200, 30)];
     [submitBtn addTarget:self action:@selector(submitNewPassword) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:submitBtn];
 }
-
 
 #pragma mark - 点击事件
 - (void)submitNewPassword
@@ -68,7 +69,6 @@
     NSUserDefaults  *defaults = [NSUserDefaults standardUserDefaults];
     NSString *formalPass= [defaults objectForKey:@"password"];
     
-
     if (![newPasswordField.text isEqualToString:confirmPasswordField.text]) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"输入的两次密码不相同！" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
         [alert show];
@@ -84,32 +84,41 @@
         UIAlertView *worning = [[UIAlertView alloc]initWithTitle:@"提示" message:@"和原来密码一样！请重新修改！" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
         [worning show];
     }
-    
     else{
-            
             //上传新密码
+        if (self.isModifyBytel) {
+            NSDictionary *dic =@{@"password":newPasswordField.text,@"tel":self.tel};
+            [TXDataService POST:updatePassByTel param:dic isCache:NO caChetime:0 completionBlock:^(id responseObject, NSError *error) {
+                if ([responseObject objectForKey:@"success"]) {
+                    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提示" message:@"您的密码修改成功！请重新登录" delegate:self cancelButtonTitle:@"好" otherButtonTitles: nil];
+                    [alert show];
+                }
+            }];
+
+        }else
+        {
             NSDictionary *dic =@{@"password":newPasswordField.text};
             [TXDataService POST:updataPass param:dic isCache:NO caChetime:0 completionBlock:^(id responseObject, NSError *error) {
-            if ([responseObject objectForKey:@"success"]) {
-               // NSLog(@"修改密码成功！！");
-                UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提示" message:@"您的密码修改成功！请重新登录" delegate:self cancelButtonTitle:@"确定" otherButtonTitles: nil];
-                [alert show];
-              }
-             }];
-              }
+                if ([responseObject objectForKey:@"success"]) {
+                    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提示" message:@"您的密码修改成功！请重新登录" delegate:self cancelButtonTitle:@"好" otherButtonTitles: nil];
+                    [alert show];
+                }
+            }];
+        }
+        }
 }
+
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     if (buttonIndex ==0) {
         TXLoginViewController *loginviewcntroller = [[TXLoginViewController alloc]init];
         loginviewcntroller.hidesBottomBarWhenPushed =  YES;
         [self.navigationController pushViewController:loginviewcntroller animated:YES];
-
     }
-
-
 }
+
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
     [self.view endEditing:YES];
 }
+
 @end

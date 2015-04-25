@@ -148,6 +148,7 @@
     TXReviseNameViewController *revisename = [[TXReviseNameViewController alloc]init];
     //短信验证控制器
     TXMessageAuthenticationController *messageau = [[TXMessageAuthenticationController alloc]init];
+    messageau.isLogin = YES;
     
     //获取用户手机号码
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];

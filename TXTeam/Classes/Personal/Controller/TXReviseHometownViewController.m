@@ -45,7 +45,6 @@
 
     UIBarButtonItem *reserve = [[UIBarButtonItem alloc]initWithTitle:@"保存" style:UIBarButtonItemStyleDone target:self action:@selector(reservebutton)];
     self.navigationItem.rightBarButtonItem = reserve;
-
 }
 
 -(void)initView
@@ -57,13 +56,19 @@
     lab.text = @"家乡：";
     [homeview addSubview:lab];
     
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *province = [defaults objectForKey:@"home_province"];
+    NSString *city = [defaults objectForKey:@"home_city"];
+    NSString *area = [defaults objectForKey:@"home_area"];
+    NSString *homeTwon = [[NSString alloc] initWithFormat:@"%@ %@ %@",province,city,area];
+    
     //按钮宽
-    CGFloat btnWidth = kScreenHeight*0.8;
+    CGFloat btnWidth = kScreenHeight*0.7;
     //按钮高
     CGFloat btnHeigth = 50;
     homebtn = [[UIButton alloc]initWithFrame:CGRectMake(kScreenWidth-btnWidth, 0, btnWidth, btnHeigth)];
     [homebtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [homebtn setTitle:_formalhometown forState:UIControlStateNormal];
+    [homebtn setTitle:homeTwon forState:UIControlStateNormal];
     [homebtn addTarget:self action:@selector(homebtnClick) forControlEvents:UIControlEventTouchUpInside];
     homebtn.tag = 101;
     [homeview addSubview:homebtn];

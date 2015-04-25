@@ -13,6 +13,8 @@
 #import "TXReadViewController.h"
 #import "TXPersonalViewController.h"
 #import "TXBaseNavController.h"
+#import "EAIntroPage.h"
+#import "EAIntroView.h"
 #import "Common.h"
 
 #define TITLE @[@"会话",@"汽车班次查询推荐",@"招聘",@"阅读",@"我"]
@@ -27,6 +29,48 @@
     [super viewDidLoad];
     [self initControllers];
 }
+
+//加载引导页
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    
+    NSNumber *isFirstLogin = [defaults objectForKey:@"isFirstLogin"];
+    BOOL firstLogin = [isFirstLogin boolValue];
+    NSLog(@"是否是第一次登陆：%d",firstLogin);
+    if (!isFirstLogin) {
+        [self showIntroWithCrossDissolve];
+    }
+}
+
+- (void)showIntroWithCrossDissolve {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    BOOL firstLogin = 1;
+    NSNumber *isFirstLogin = [NSNumber numberWithInteger:firstLogin];
+    [defaults setObject:isFirstLogin forKey:@"isFirstLogin"];
+    
+    //引导页1
+    EAIntroPage *page1 = [EAIntroPage page];
+    page1.bgImage = [UIImage imageNamed:@"guidance1"];
+    page1.titleImage = [UIImage imageNamed:@"original"];
+    
+    //引导页3
+    EAIntroPage *page2 = [EAIntroPage page];
+    page2.bgImage = [UIImage imageNamed:@"guidance2"];
+    page2.titleImage = [UIImage imageNamed:@"supportcat"];
+    
+    //引导页3
+    EAIntroPage *page3 = [EAIntroPage page];
+    page3.bgImage = [UIImage imageNamed:@"guidance3"];
+    page3.titleImage = [UIImage imageNamed:@"femalecodertocat"];
+    
+    EAIntroView *intro = [[EAIntroView alloc] initWithFrame:self.view.bounds andPages:@[page1,page2,page3]];
+    
+    [intro setDelegate:self];
+    [intro showInView:self.view animateDuration:0.0];
+}
+
 //初始化控制器
 - (void)initControllers
 {

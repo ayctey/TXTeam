@@ -33,6 +33,7 @@
     time = 60;
     [self initViews];
 }
+
 #pragma mark - 添加视图
 - (void)initViews
 {
@@ -80,9 +81,8 @@
     [verificationBtn setFrame:CGRectMake((kScreenWidth-120)/2, bgView2.frame.origin.y+70, 120, 40)];
     [verificationBtn addTarget:self action:@selector(verificationClick) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:verificationBtn];
-    
-    
 }
+
 #pragma mark - 点击事件
 - (void)sendMessage:(UIButton *)button
 {
@@ -94,7 +94,6 @@
     else{
         [self GetphoneCode];
     }
-        
 }
 
 - (void)verificationClick
@@ -106,14 +105,10 @@
     }
     else
     {
-        
         [SMS_SDK commitVerifyCode:verificationCodeTF.text result:^(enum SMS_ResponseState state) {
             if (1==state) {
                 NSLog(@"验证成功");
                 [self pushToViewController];
-                
-
-         
             }
             else if(0==state)
             {
@@ -123,8 +118,6 @@
                 [alert show];
             }
         }];
-    
-
   }
 }
 
@@ -180,29 +173,24 @@
             [alert show];
         }
     }];
-
-
 }
+
 //判断手机号码是否注册过
 -(void)WheatherRegister
 {
     UITextField *tel = (UITextField *)[self.view viewWithTag:101];
-   // NSLog(@"numbers：%@",tel.text);
     NSDictionary *dic = @{@"tel":tel.text};
     [TXDataService POST:existTel param:dic isCache:NO caChetime:0 completionBlock:^(id responseObject, NSError *error) {
         NSNumber *ss=[responseObject objectForKey:@"result"];
         //注册过
         if ([ss boolValue]) {
-           // NSLog(@"此号码已被注册！");
             UIAlertView *aleartview = [[UIAlertView alloc]initWithTitle:@"提示" message:@"此手机号码已被注册过！请直接登录！" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
             [aleartview show];
         }
         else{
             //NSLog(@"未被注册");
             [self GetphoneCode];
-        
         }
-    
     }];
 
 }
@@ -213,11 +201,16 @@
         
         self.title = @"修改密码";
         TXChangePasswordController *changePasswordVC = [[TXChangePasswordController alloc] init];
+        UITextField *telTwxtField = (UITextField *)[self.view viewWithTag:101];
+        changePasswordVC.tel =  telTwxtField.text;
+        if (!self.isLogin) {
+            changePasswordVC.isModifyBytel = YES;
+        }
+        
         [self.navigationController pushViewController:changePasswordVC animated:YES];
     }
     if (viewController ==VCSetingPassWord) {
-        
-        
+ 
         self.title =@"注册";
         UITextField *phoneText =(UITextField *)[self.view viewWithTag:101];
         _phonenumbs=phoneText.text;
@@ -232,8 +225,8 @@
 {
     viewController = vc;
 }
--(void)getUserPhonenums:(NSString *)numbers{
 
+-(void)getUserPhonenums:(NSString *)numbers{
     
     UITextField *phonetext  = (UITextField *)[self.view viewWithTag:101];
     phonetext.text = numbers;
