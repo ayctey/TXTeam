@@ -28,6 +28,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self initControllers];
+    self.edgesForExtendedLayout = UIRectEdgeNone;
 }
 
 //加载引导页
@@ -38,7 +39,7 @@
     
     NSNumber *isFirstLogin = [defaults objectForKey:@"isFirstLogin"];
     BOOL firstLogin = [isFirstLogin boolValue];
-    NSLog(@"是否是第一次登陆：%d",firstLogin);
+    MyLog(@"是否是第一次登陆：%d",firstLogin);
     if (!isFirstLogin) {
         [self showIntroWithCrossDissolve];
     }

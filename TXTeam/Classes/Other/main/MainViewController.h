@@ -12,7 +12,6 @@
 @interface MainViewController : UITabBarController<EAIntroDelegate>
 {
     UIButton *selectedBtn;
-
 }
 
 

@@ -16,7 +16,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"班次详细信息";
+    self.title = [[NSString alloc] initWithFormat:@"%@<->%@",_carInfoModel.begin_area,_carInfoModel.end_area];
     self.view.backgroundColor = kBackgroundColor;
     [self initSubView];
     
@@ -27,7 +27,6 @@
         label.text = data;
         i++;
     }
-    
 }
 
 - (void)initSubView {
@@ -40,6 +39,7 @@
     float image_height = kScreenWidth*0.5;
     UIImageView *carImageView = [[UIImageView alloc] init];
     carImageView.frame = CGRectMake(0, 0, kScreenWidth, image_height);
+    [carImageView setImage:[UIImage imageNamed:@"car"]];
     carImageView.backgroundColor = [UIColor redColor];
     [scrollView addSubview:carImageView];
     
@@ -65,6 +65,39 @@
     [button setFrame:CGRectMake(kScreenWidth-210, 400, 200, 40)];
     [button addTarget:self action:@selector(huihua) forControlEvents:UIControlEventTouchUpInside];
     [scrollView addSubview:button];
+    
+    [self departureTimeTableView];
+}
+
+-(void)departureTimeTableView
+{
+    //时刻表信息视图
+    CGFloat TimeTableViewWidth = kScreenWidth-2*kSpacing;
+    CGFloat TimeTableViewHeigth = kScreenWidth;
+    
+    UIView *TimeTableView = [[UIView alloc] initWithFrame:CGRectMake(kSpacing, kScreenWidth*0.5+kSpacing, TimeTableViewWidth, TimeTableViewHeigth)];
+    TimeTableView.backgroundColor = kBackgroundColor;
+    [scrollView addSubview:TimeTableView];
+    
+    //时刻表信息视图头视图
+    UIView *headView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, TimeTableViewWidth, 44)];
+    headView.backgroundColor = [UIColor redColor];
+    headView.layer.cornerRadius = 5;
+    [TimeTableView addSubview:headView];
+    
+    //车辆类型label
+    UILabel *carTypeLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, TimeTableViewWidth/2, 44)];
+    #warning ResetText
+    [carTypeLabel setText:@"大型卧铺"];
+    carTypeLabel.textAlignment = NSTextAlignmentLeft;
+    [headView addSubview:carTypeLabel];
+    
+    //发车日期label
+    UILabel *departureDateLabel = [[UILabel alloc]initWithFrame:CGRectMake(TimeTableViewWidth/2,0 , TimeTableViewWidth/2, 44)];
+    [departureDateLabel setText:self.departureDate];
+    departureDateLabel.textAlignment = NSTextAlignmentRight;
+    [headView addSubview:departureDateLabel];
+    
 }
 
 - (void)huihua{

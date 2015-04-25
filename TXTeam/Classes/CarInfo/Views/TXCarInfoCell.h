@@ -10,11 +10,8 @@
 @class TXCarInfoModel;
 
 @interface TXCarInfoCell : UITableViewCell
-{
-    
+{    
     UILabel *Carlab;
-    
-    
 }
 
 @property (nonatomic,strong) UILabel *departure_time;    //发车时间

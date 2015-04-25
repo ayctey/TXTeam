@@ -57,7 +57,7 @@
             if ([[MMProgressHUD sharedHUD] isVisible]) {
                 [MMProgressHUD dismiss];
             }
-            UIAlertView *alerView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"网络不佳，请稍后再试" delegate:self cancelButtonTitle:@"确定" otherButtonTitles: nil];
+            UIAlertView *alerView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"网络不佳，请稍后再试" delegate:self cancelButtonTitle:@"好" otherButtonTitles: nil];
             [alerView show];
         }
     }
@@ -107,7 +107,7 @@
             if ([[MMProgressHUD sharedHUD] isVisible]) {
                 [MMProgressHUD dismiss];
             }
-            UIAlertView *alerView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"网络不佳，请稍后再试" delegate:self cancelButtonTitle:@"确定" otherButtonTitles: nil];
+            UIAlertView *alerView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"网络不佳，请稍后再试" delegate:self cancelButtonTitle:@"好" otherButtonTitles: nil];
             [alerView show];
         }
             }

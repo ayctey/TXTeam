@@ -15,6 +15,7 @@
 
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) Reachability *rechable;
+@property BOOL isInMainView;  //主页面是否已经加载
 
 -(void)pushToLoginViewcontroller;
 -(void)pushMaincomtroller;

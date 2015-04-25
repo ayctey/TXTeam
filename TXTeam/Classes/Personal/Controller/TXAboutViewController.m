@@ -18,6 +18,7 @@
     [super viewDidLoad];
     self.title = @"关于";
     self.view.backgroundColor = [UIColor whiteColor];
+    self.edgesForExtendedLayout = UIRectEdgeNone;
     [self initMianview];
 }
 -(void)initMianview{

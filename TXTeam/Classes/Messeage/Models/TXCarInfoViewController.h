@@ -28,6 +28,4 @@
     BOOL pullToRefresh;
 }
 
-
-
 @end

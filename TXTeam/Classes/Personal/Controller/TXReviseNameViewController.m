@@ -60,11 +60,6 @@
         _newname = text.text;
         [self reviseName];
         
-        //发送通知
-        [[NSNotificationCenter defaultCenter]postNotificationName:@"name" object:_newname];
-        //修改后的姓名重新存入单例
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        [ defaults setValue:_newname forKey:@"name"];
     }
     else{
         
@@ -80,10 +75,14 @@
     [TXDataService POST:updateName param:param isCache:NO caChetime:0 completionBlock:^(id responseObject, NSError *error) {
         
            if ([responseObject objectForKey:@"success"]) {
-            NSLog(@"responseobject:%@",[responseObject objectForKey:@"success"]);
+               //发送通知
+               [[NSNotificationCenter defaultCenter]postNotificationName:@"name" object:_newname];
+               //修改后的姓名重新存入单例
+               NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+               [ defaults setValue:_newname forKey:@"name"];
+
             [self.navigationController popViewControllerAnimated:YES];
         }
-        
     }];
     
 }

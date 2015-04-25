@@ -18,16 +18,6 @@
     if (self) {
         self.backgroundColor = kBackgroundColor;
         [self initMainview];
-        self.departure_time.text =@"09:35";
-        self.begin_area_detail.text =@"茂名交委站";
-        self.end_area_detail.text =@"深圳西乡站";
-        self.begin_area.text =@"茂名";
-        self.end_area.text =@"深圳";
-        self.price.text =@"100￥";
-        self.CarStyle.text =@"大型高-卧";
-        
-        // NSLog(@"cell");
-        
     }
     return self;
 }

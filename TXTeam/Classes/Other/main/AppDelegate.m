@@ -34,6 +34,7 @@
     //实施网络状况监听
     [self setNetworkMonitor];
     
+    //是否已经登录
     if (!isLogined) {
         //登陆
         [self isLogin];
@@ -49,6 +50,9 @@
     //短信验证服务器连接
     [SMS_SDK registerApp:SMSAppKey
               withSecret:SMSAppSecret];
+    
+    //主页面是否已经加载
+    self.isInMainView = NO;
     
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
@@ -98,7 +102,7 @@
 }
 
 -(void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error{
-    NSLog(@"error:%@",error);
+    MyLog(@"error:%@",error);
     [RCIM initWithAppKey:RONGCLOUD_IM_APPKEY deviceToken:nil];
 }
 
@@ -140,7 +144,7 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(networkStateChange) name:kReachabilityChangedNotification object:nil];
     //延时进行网络监测通知
-    [self performSelector:@selector(startNotifier) withObject:nil afterDelay:0.01f];
+    [self performSelector:@selector(startNotifier) withObject:nil afterDelay:0.5f];
 }
 
 //开始网络监测通知
@@ -152,13 +156,26 @@
 //监控网络状态的变化
 -(void)networkStateChange
 {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    BOOL isreachable;
+    
     // 检测手机是否能上网络(WIFI\3G\2.5G)
     Reachability *conn = [Reachability reachabilityForInternetConnection];
     
     // 判断网络状态
     if ([conn currentReachabilityStatus] != NotReachable) {
-        [self isLogin];
+        //把网络状态设置yes
+        isreachable = YES;
+        [defaults setValue:[NSNumber numberWithBool:isreachable]forKey:@"reachable"];
+        
+        if (!isLogined) {
+             [self isLogin];
+        }
     } else {
+        //把网络状态设置NO
+        isreachable = NO;
+        [defaults setValue:[NSNumber numberWithBool:isreachable]forKey:@"reachable"];
+        
         //把登陆状态设置为NO
         isLogined = NO;
         
@@ -202,15 +219,17 @@
                     //链接融云
                     [[TXLoginRCIM shareLoginRCIM] connectRCIM];
                     
-                    MyLog(@"%@",[responseObject objectForKey:@"data"]);
+                    //MyLog(@"%@",[responseObject objectForKey:@"data"]);
                     NSDictionary *data = [responseObject objectForKey:@"data"];
                     
                     //保存用户信息
                     TXUserModel *userModel = [[TXUserModel alloc] initWithDataDic:data];
                     [userModel save];
                     
-                    //进入主页
-                    [self pushMaincomtroller];
+                    if (!self.isInMainView) {
+                        //进入主页
+                        [self pushMaincomtroller];
+                    }
                 }
             }];
         }
@@ -233,6 +252,7 @@
     self.window.rootViewController = nil;
     MainViewController *mainCtrl = [[MainViewController alloc] init];
     self.window.rootViewController = mainCtrl;
+    self.isInMainView = YES;
 }
 
 //进入登陆界面

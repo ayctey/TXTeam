@@ -84,7 +84,6 @@
         return NO;
     }
     return YES;
-    
 }
 
 - (void)getDate {
@@ -113,17 +112,14 @@
 
 - (void)getCarInfoData:(NSDictionary *)params
 {
-    //检测网络
-    Reachability *reachable = [Reachability reachabilityWithHostName:@"www.baidu.com"];
-    NSLog(@"网络状况：%d",reachable.isReachable);
-    if (!(reachable.isReachable)) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"网络连接失败，请检查网络配置" delegate:self cancelButtonTitle:@"确定" otherButtonTitles: nil];
-        [alert show];
-        return;
-    }
     if (!pullToRefresh) {
-        //添加“加载中”视图
-        [_tableView addSubview:loadingView];
+        
+        //判断是否联网
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        if ([[defaults objectForKey:@"reachable"] boolValue]) {
+            //添加“加载中”视图
+            [_tableView addSubview:loadingView];
+        }
     }
     
     //查询汽车班次
@@ -155,8 +151,6 @@
         }else {
             pullToRefresh = NO;
         }
-        
-        
     }];
 }
 
@@ -301,6 +295,7 @@
     TXCarDetailController *detail = [[TXCarDetailController alloc] init];
     detail.hidesBottomBarWhenPushed = YES;
     detail.carInfoModel = dataArray[indexPath.row];
+    detail.departureDate = [TXTool sharedTXTool].departure_time;
     [self.navigationController pushViewController:detail animated:YES];
 }
 

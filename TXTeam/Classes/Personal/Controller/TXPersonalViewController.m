@@ -42,6 +42,9 @@
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(modifyWorkPlace:) name:@"newworkplace" object:nil];
     //为企业添加通知
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(modifyComply:) name:@"newcomplyname" object:nil];
+    
+    //接收name修改通知
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setUserView:) name:@"name" object:nil];
 }
 
 //添加注销按钮
@@ -54,25 +57,8 @@
 
 - (void)initViews
 {
-    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(userTapClick:)];
-    
-    UserView *userView = [[UserView alloc] init];
-    userView.frame = CGRectMake(0, kNavigationH, kScreenWidth, userView_height);
-    userView.backgroundColor = kBackgroundColor;
-    [userView addGestureRecognizer:tapGesture];
-    
-    //获取数据
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *userName = [defaults objectForKey:@"name"];
-    NSString *tel = [defaults objectForKey:@"tel"];
-    NSString *url = [defaults objectForKey:@"protrait_url"];
-    
-    //填充数据
-    userView.userName.text = userName;
-    userView.accout.text = tel;
-    NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:url]];
-    userView.headImage.image = [UIImage imageWithData:imageData];
-    [self.view addSubview:userView];
+    //添加userView
+    [self setUserView:nil];
     
     //获取用户数据
     [self getUserDefaultData];
@@ -95,11 +81,38 @@
         hometowntextfield.borderStyle =UITextBorderStyleNone;
         hometowntextfield.tag = 100+i;
         textfieldTag = hometowntextfield.tag;
-        MyLog(@"userdata:%@",userData);
         hometowntextfield.text = userData[i];
         hometowntextfield.delegate =self;
         [view addSubview: hometowntextfield];
     }
+}
+
+-(void)setUserView:(NSNotification *)notification
+{
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(userTapClick:)];
+    
+    UserView *userView = [[UserView alloc] init];
+    userView.frame = CGRectMake(0, kNavigationH, kScreenWidth, userView_height);
+    userView.backgroundColor = kBackgroundColor;
+    [userView addGestureRecognizer:tapGesture];
+    
+    //获取数据
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *userName = [defaults objectForKey:@"name"];
+    NSString *tel = [defaults objectForKey:@"tel"];
+    NSString *url = [defaults objectForKey:@"protrait_url"];
+    
+    //填充数据
+    if (notification == nil) {
+        userView.userName.text = userName;
+    }else
+    {
+    userView.userName.text = notification.object;
+    }
+    userView.accout.text = tel;
+    NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:url]];
+    userView.headImage.image = [UIImage imageWithData:imageData];
+    [self.view addSubview:userView];
 }
 
 //点击用户头像方法
@@ -158,8 +171,6 @@
 {
     UITextField *text = (UITextField *)[self.view viewWithTag:100];
     [text setText:notification.object];
-   // NSLog(@"set: %@",text.text);
-
 }
 
 -(void)modifyWorkPlace: (NSNotification *)notification

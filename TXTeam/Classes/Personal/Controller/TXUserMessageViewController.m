@@ -85,15 +85,17 @@
     else{
     sex = @"女";
     }
-    //[MMProgressHUD setPresentationStyle:MMProgressHUDPresentationStyleNone];
-    //请求修改性别
-    [self reviseData_Sex:sex];
+     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    if (![[defaults objectForKey:@"sex"] isEqualToString:sex]) {
+        //请求修改性别
+        [self reviseData_Sex:sex];
+    }
 }
 
 #pragma mark -- 加载数据
 -(void)reviseData_Sex:(NSString *)_sex{
 
-    [MMProgressHUD showWithStatus:@"加载中..."];
+    [MMProgressHUD showWithStatus:@"修改中..."];
     
     NSDictionary *param = @{@"sex":_sex};
     [TXDataService POST:updateSex param:param isCache:NO caChetime:0 completionBlock:^(id responseObject, NSError *error) {
@@ -171,9 +173,8 @@
         default:
             break;
     }
-
-
 }
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

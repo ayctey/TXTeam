@@ -19,6 +19,8 @@ enum LabelTag {
 {
     UIScrollView *scrollView;
 }
-@property (nonatomic,strong) TXCarInfoModel *carInfoModel;
+
+@property (nonatomic,strong) TXCarInfoModel *carInfoModel;//时刻表模型
+@property (nonatomic,strong) NSString *departureDate;
 
 @end
