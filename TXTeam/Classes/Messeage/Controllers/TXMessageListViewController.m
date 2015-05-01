@@ -17,7 +17,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 //    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"Title bar.png"] forBarMetrics:UIBarMetricsDefault];
-    [self setNavigationTitle:@"会话" textColor:[UIColor blackColor]];
+    [self setNavigationTitle:@"会话" textColor:[UIColor whiteColor]];
     // 隐藏融云导航左右按钮
        self.navigationItem.leftBarButtonItem = nil;
        self.navigationItem.rightBarButtonItem = nil;

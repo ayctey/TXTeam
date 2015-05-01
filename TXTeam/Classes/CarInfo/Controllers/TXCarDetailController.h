@@ -18,6 +18,8 @@ enum LabelTag {
 @interface TXCarDetailController : TXBaseViewController
 {
     UIScrollView *scrollView;
+    CGFloat TimeTableViewHeigth;
+    CGFloat staffAndCompanyViewHeigth;
 }
 
 @property (nonatomic,strong) TXCarInfoModel *carInfoModel;//时刻表模型

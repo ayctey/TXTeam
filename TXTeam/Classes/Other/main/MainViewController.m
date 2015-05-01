@@ -27,6 +27,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    //初始化控制器
     [self initControllers];
     self.edgesForExtendedLayout = UIRectEdgeNone;
 }

@@ -14,7 +14,6 @@
     UIButton *selectedBtn;
 }
 
-
 @property (nonatomic,strong) NSString *currentUserId;
 
 @end
