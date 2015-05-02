@@ -222,7 +222,7 @@
     
     UILabel *priceLabel = [[UILabel alloc]initWithFrame:CGRectMake(priceLabel_x,priceLabel_y, priceLabelWidth, priceLabelHeigth)];
     [priceLabel setText:[NSString stringWithFormat:@"￥：%@",self.carInfoModel.price]];
-    priceLabel.textColor = [UIColor redColor];
+    priceLabel.textColor = [UIColor orangeColor];
     priceLabel.font = [UIFont systemFontOfSize:25];
     priceLabel.textAlignment = NSTextAlignmentCenter;
     [TimeTableView addSubview:priceLabel];

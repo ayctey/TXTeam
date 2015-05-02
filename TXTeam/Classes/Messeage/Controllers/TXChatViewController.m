@@ -17,8 +17,12 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"Title bar.png"] forBarMetrics:UIBarMetricsDefault];
-    
+
+}
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    self.hidesBottomBarWhenPushed = NO;
 }
 
 - (void)didReceiveMemoryWarning {

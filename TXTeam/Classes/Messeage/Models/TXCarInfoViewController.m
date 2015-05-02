@@ -21,6 +21,7 @@
 #import "TXNoDataIndicateView.h"
 #import "TXReloadView.h"
 #import "TXLoadingView.h"
+#import "RCIM.h"
 
 @interface TXCarInfoViewController ()
 
@@ -51,6 +52,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    self.hidesBottomBarWhenPushed = NO;
     
     TXTool *tool =[TXTool sharedTXTool];
     if (tool.beginSearch == YES) {//查询后获取TXTool的参数再请求班次信息
@@ -177,10 +179,10 @@
     _tableView = [[TXBaseTableView alloc] initWithFrame:CGRectMake(0, kNavigationH+10+40, kScreenWidth, kScreenHeight-kNavigationH-50-kTabBarH) style:UITableViewStylePlain];
     _tableView.dataSource = self;
     _tableView.delegate = self;
-    _tableView.rowHeight = 120;
+    _tableView.rowHeight = 90;
     _tableView.backgroundColor = kBackgroundColor;
     _tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-    _tableView.separatorColor = [UIColor whiteColor];
+    _tableView.separatorColor = [UIColor redColor];
     [_tableView addHeaderWithTarget:self action:@selector(headerRereshing) dateKey:@"table"];
     //设置下拉刷新titile
     _tableView.headerPullToRefreshText = @"下拉可以刷新了";
@@ -285,6 +287,7 @@
     }
     //传递模型数据给cell
     cell.carInfoModel = dataArray[indexPath.row];
+    cell.pushSendMessageDelegate = self;
     return cell;
 }
 
@@ -309,10 +312,22 @@
     if ([dataArray count] != 0) {
         //出发城市和到达城市
         TXCarInfoModel *carInfoModel = [dataArray objectAtIndex:0];
-        NSString *title = [[NSString alloc]initWithFormat:@"%@<-->%@",carInfoModel.begin_city,carInfoModel.end_city];
+        NSString *title = [[NSString alloc]initWithFormat:@"%@<-->%@",carInfoModel.begin_area,carInfoModel.end_area];
         self.navigationItem.title = title;
     }
 }
 
+#pragma mark - CellPushSendMessageDelegate
+//发送消息
+- (void)PushToSendMessage:(NSString *)rongYunID
+{
+    RCChatViewController *chatViewController = [[RCIM sharedRCIM]createPrivateChat:rongYunID title:self.navigationItem.title completion:^(){
+        // 创建 ViewController 后，调用的 Block，可以用来实现自定义行为。
+        
+    }];
+    self.hidesBottomBarWhenPushed = YES;
+    // 把单聊视图控制器添加到导航栈。
+    [self.navigationController pushViewController:(UIViewController *)chatViewController animated:YES];
+}
 
 @end

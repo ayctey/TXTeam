@@ -7,22 +7,27 @@
 //
 
 #import <UIKit/UIKit.h>
-@class TXCarInfoModel;
+#import "TXCarInfoModel.h"
+
+@protocol CellPushSendMessageDelegate;
+
 
 @interface TXCarInfoCell : UITableViewCell
-{    
-    UILabel *Carlab;
+{
+    UIView *cellContentView;
 }
 
-@property (nonatomic,strong) UILabel *departure_time;    //发车时间
-@property (nonatomic,strong) UILabel *begin_area_detail;  //出发站
-@property (nonatomic,strong) UILabel *end_area_detail; //终点站
-@property (nonatomic,strong) UILabel *begin_area;     //出发城市
-@property (nonatomic,strong) UILabel *end_area;    //到达城市
-@property (nonatomic,strong) UILabel *price;         //价格
-@property (nonatomic,strong) UILabel *CarStyle;      //汽车类型
-@property (nonatomic,strong) UILabel *begin_city;
-@property (nonatomic,strong) UILabel *end_city;
 @property (nonatomic,strong) TXCarInfoModel *carInfoModel;//汽车模型
+@property (nonatomic,assign) id<CellPushSendMessageDelegate> pushSendMessageDelegate;
+
+@end
+
+@protocol CellPushSendMessageDelegate <NSObject>
+
+//push to 单聊界面
+- (void)PushToSendMessage:(NSString *)rongYunID;
+
+-(void)shareWeixinSDK;
+
 
 @end

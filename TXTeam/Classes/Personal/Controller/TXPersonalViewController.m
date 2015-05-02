@@ -30,7 +30,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:1];
     [self addBarItem];
     [self initViews];
 }
@@ -68,7 +68,7 @@
         UIView *view = [[UIView alloc] init];
         // view.tag = 100+i;
         view.backgroundColor = kBackgroundColor;
-        view.frame = CGRectMake(0, userView_height+kSpacing+kNavigationH+45*i, kScreenWidth, 40);
+        view.frame = CGRectMake(0, userView_height+2*kSpacing+kNavigationH+45*i, kScreenWidth, 40);
         [self.view addSubview:view];
         
         UILabel *titleLabel = [[UILabel alloc] init];
@@ -92,8 +92,7 @@
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(userTapClick:)];
     
     UserView *userView = [[UserView alloc] init];
-    userView.frame = CGRectMake(0, kNavigationH, kScreenWidth, userView_height);
-    userView.backgroundColor = kBackgroundColor;
+    userView.frame = CGRectMake(0, kNavigationH+kSpacing, kScreenWidth, userView_height);
     [userView addGestureRecognizer:tapGesture];
     
     //获取数据

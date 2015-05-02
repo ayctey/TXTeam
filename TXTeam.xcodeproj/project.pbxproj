@@ -72,7 +72,6 @@
 		A5D644231A68E88700A09FC4 /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5D644221A68E88700A09FC4 /* AddressBookUI.framework */; };
 		A5D644251A68E89600A09FC4 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5D644241A68E89600A09FC4 /* MessageUI.framework */; };
 		A5D644271A68E94B00A09FC4 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A5D644261A68E94A00A09FC4 /* libicucore.dylib */; };
-		A5D6442C1A69015800A09FC4 /* tuanxiangtuan@2x副本.png in Resources */ = {isa = PBXBuildFile; fileRef = A5D6442B1A69015800A09FC4 /* tuanxiangtuan@2x副本.png */; };
 		A5D644311A694C0500A09FC4 /* 登录背景.png in Resources */ = {isa = PBXBuildFile; fileRef = A5D644301A694C0500A09FC4 /* 登录背景.png */; };
 		A5D86E4C1ABC0D9800DD7D91 /* TXReviseNameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A5D86E4B1ABC0D9800DD7D91 /* TXReviseNameViewController.m */; };
 		F21F4B271AE54BD3009C904E /* RongCloud.bundle in Resources */ = {isa = PBXBuildFile; fileRef = F21F4B261AE54BD3009C904E /* RongCloud.bundle */; };
@@ -303,7 +302,6 @@
 		A5D644221A68E88700A09FC4 /* AddressBookUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBookUI.framework; path = System/Library/Frameworks/AddressBookUI.framework; sourceTree = SDKROOT; };
 		A5D644241A68E89600A09FC4 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		A5D644261A68E94A00A09FC4 /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
-		A5D6442B1A69015800A09FC4 /* tuanxiangtuan@2x副本.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tuanxiangtuan@2x副本.png"; sourceTree = "<group>"; };
 		A5D644301A694C0500A09FC4 /* 登录背景.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "登录背景.png"; sourceTree = "<group>"; };
 		A5D86E4A1ABC0D9800DD7D91 /* TXReviseNameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TXReviseNameViewController.h; sourceTree = "<group>"; };
 		A5D86E4B1ABC0D9800DD7D91 /* TXReviseNameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TXReviseNameViewController.m; sourceTree = "<group>"; };
@@ -671,7 +669,6 @@
 				F25B61711AEB1F3A00452E8A /* guidance2.png */,
 				F25B61761AEB20BE00452E8A /* guidance3.png */,
 				A5D644301A694C0500A09FC4 /* 登录背景.png */,
-				A5D6442B1A69015800A09FC4 /* tuanxiangtuan@2x副本.png */,
 				A5D644141A68D0A900A09FC4 /* 登录-人头@2x.png */,
 				A5D644151A68D0A900A09FC4 /* 锁@2x.png */,
 				A5D1AF8B1A6417FD00F71231 /* 发光放大镜@2x.png */,
@@ -1427,7 +1424,6 @@
 				A5D1AF9E1A6417FD00F71231 /* 星星@2x.png in Resources */,
 				F27F995F1AE64C53007ED071 /* area.plist in Resources */,
 				F25B61741AEB1F3A00452E8A /* guidance2.png in Resources */,
-				A5D6442C1A69015800A09FC4 /* tuanxiangtuan@2x副本.png in Resources */,
 				A5D36BD51A69F5EC005FF1F5 /* 放大镜@3x.png in Resources */,
 				F25B61731AEB1F3A00452E8A /* guidance1.png in Resources */,
 				A5D1AF9D1A6417FD00F71231 /* 信息@2x.png in Resources */,

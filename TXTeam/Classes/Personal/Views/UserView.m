@@ -16,7 +16,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         [self initViews];
-        
+        [self setBackgroundColor:kBackgroundColor];
     }
     return self;
 }
@@ -36,6 +36,7 @@
     //用户名
     _userName = [[UILabel alloc] init];
     _userName.frame = CGRectMake(90, 10, 60, 30);
+    _userName.font = [UIFont fontWithName:@ "Arial Rounded MT Bold"  size:(20.0)];
     [self addSubview:_userName];
     
     _accout = [[UILabel alloc] init];

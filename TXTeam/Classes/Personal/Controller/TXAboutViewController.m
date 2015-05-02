@@ -24,7 +24,7 @@
 -(void)initMianview{
     
     UIImageView *logoimageview =[[UIImageView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight*0.4)];
-    logoimageview.image =[UIImage imageNamed:@"tuanxiangtuan@2x副本.png"];
+    logoimageview.image =[UIImage imageNamed:@"appIdentify.png"];
    // logoimageview.backgroundColor =[UIColor redColor];
     [self.view addSubview:logoimageview];
   
@@ -37,7 +37,7 @@
     
     versionNumberLabel = [[UILabel alloc] init];
     versionNumberLabel.frame = CGRectMake(kScreenWidth-80, 5, 80, 30);
-    versionNumberLabel.text = @"1.0.1";
+    versionNumberLabel.text = @"0.9";
     [versionview addSubview:versionNumberLabel];
     
     UIView *aboutview =[[UIView alloc]initWithFrame:CGRectMake(0, versionview.frame.origin.y+50 +kSpacing, kScreenWidth, 50)];
@@ -49,8 +49,8 @@
     
     UIButton *Checkbtn = [[UIButton alloc]initWithFrame:CGRectMake(30, aboutview.frame.origin.y+50+20, kScreenWidth-60, 40)];
     [Checkbtn setTitle:@"检查更新" forState:UIControlStateNormal];
-    [Checkbtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [Checkbtn setBackgroundImage:[UIImage imageNamed:@"Title bar.png"] forState:UIControlStateNormal];
+    [Checkbtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [Checkbtn setBackgroundColor:[UIColor redColor]];
     [Checkbtn addTarget:self action:@selector(checkRenew) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:Checkbtn];
 

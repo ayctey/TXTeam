@@ -19,5 +19,6 @@
 @property (nonatomic,strong) UILabel *StartCity;     //出发城市
 @property (nonatomic,strong) UILabel *ArriveCity;    //到达城市
 @property (nonatomic,strong) UILabel *price;         //价格
-@property (nonatomic,strong) UILabel *CarStyle;      //汽车类型
+@property (nonatomic,strong) UILabel *CarStyle;
+//汽车类型
 @end

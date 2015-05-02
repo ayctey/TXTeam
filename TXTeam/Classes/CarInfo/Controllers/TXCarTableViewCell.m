@@ -16,13 +16,7 @@
     if (self) {
         
         [self initmainview];
-        self.CarGoTime.text =@"09:35";
-        self.StartStation.text =@"茂名交委站";
-        self.ArriveStation.text =@"深圳西乡站";
-        self.StartCity.text =@"茂名";
-        self.ArriveCity.text =@"深圳";
-        self.price.text =@"100￥";
-        self.CarStyle.text =@"大型高-卧";
+
     }
     return self;
 }
