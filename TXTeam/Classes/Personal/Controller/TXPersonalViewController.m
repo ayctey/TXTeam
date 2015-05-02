@@ -51,7 +51,7 @@
 - (void)addBarItem
 {
     UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"注销" style:UIBarButtonItemStyleDone target:self action:@selector(barButtonClick)];
-    item.tintColor = [UIColor blackColor];
+    item.tintColor = [UIColor whiteColor];
     self.navigationItem.rightBarButtonItem = item;
 }
 

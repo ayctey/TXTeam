@@ -17,7 +17,7 @@
 #import "EAIntroView.h"
 #import "Common.h"
 
-#define TITLE @[@"会话",@"汽车班次查询推荐",@"招聘",@"阅读",@"我"]
+#define TITLE @[@"会话",@"汽车班次推荐",@"招聘",@"阅读",@"我"]
 #define BARITEM_WIDTH 16
 @interface MainViewController ()
 

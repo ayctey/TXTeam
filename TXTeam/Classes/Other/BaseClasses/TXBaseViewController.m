@@ -17,22 +17,34 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    //更改全部tittle颜色
+    [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
     self.view.backgroundColor = [UIColor blueColor];
+    
+    //navigation tittle 颜色
+    UIColor * color = [UIColor whiteColor];
+    NSDictionary * dict = [NSDictionary dictionaryWithObject:color forKey:NSForegroundColorAttributeName];
+    self.navigationController.navigationBar.titleTextAttributes = dict;
+    
+    UIBarButtonItem *backItem = [[UIBarButtonItem alloc] init];
+    [backItem setTitle:@"返回"];
+    self.navigationItem.backBarButtonItem = backItem;
 }
 
 //添加导航栏返回button
 -(void)addbackButton
 {
-    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStylePlain target:self action:@selector(backSuperController)];
+    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:@"<返回" style:UIBarButtonItemStylePlain target:self action:@selector(backSuperController)];
+    [button setTintColor:[UIColor whiteColor]];
       self.navigationItem.leftBarButtonItem = button;
 }
 
 //设置返回按钮样式
 -(void)setBackButton
 {
-    
     UIBarButtonItem *backItem = [[UIBarButtonItem alloc] init];
     self.navigationItem.backBarButtonItem = backItem;
+    backItem.tintColor = [UIColor whiteColor];
     if (IsIOS6) {
         backItem.title = @"返回";
     }

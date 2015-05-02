@@ -12,6 +12,9 @@
 #import "TXDatePicker.h"
 #import "HZAreaPickerView.h"
 #import "TXAreaModel.h"
+
+@protocol TXSelectCarViewDelegation;
+
 @interface TXSelectCarViewController : TXBaseViewController<UITextFieldDelegate,TXDatePickerdelegate,HZAreaPickerDelegate>
 {
     UIScrollView *scrollview;
@@ -23,4 +26,12 @@
 
 @property (copy, nonatomic) NSString *areaValue;
 @property (nonatomic,assign) NSInteger areaIndex;
+@property (nonatomic,assign) id <TXSelectCarViewDelegation> delegate;
+
+@end
+
+@protocol  TXSelectCarViewDelegation<NSObject>
+
+- (void)changeTitle;
+
 @end

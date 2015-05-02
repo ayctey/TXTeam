@@ -78,7 +78,7 @@
 		F21F4B271AE54BD3009C904E /* RongCloud.bundle in Resources */ = {isa = PBXBuildFile; fileRef = F21F4B261AE54BD3009C904E /* RongCloud.bundle */; };
 		F227FB941AEBCAC000653B8D /* appIdentify.png in Resources */ = {isa = PBXBuildFile; fileRef = F227FB931AEBCAC000653B8D /* appIdentify.png */; };
 		F227FB961AEBCC1600653B8D /* car.png in Resources */ = {isa = PBXBuildFile; fileRef = F227FB951AEBCC1600653B8D /* car.png */; };
-		F231A13F1AF366AE004DCD93 /* arrows.png in Resources */ = {isa = PBXBuildFile; fileRef = F231A13E1AF366AE004DCD93 /* arrows.png */; };
+		F231A1411AF36C05004DCD93 /* arrows.png in Resources */ = {isa = PBXBuildFile; fileRef = F231A1401AF36C05004DCD93 /* arrows.png */; };
 		F24B7F0A1AE08E61002911DA /* UserView.m in Sources */ = {isa = PBXBuildFile; fileRef = F24B7F091AE08E61002911DA /* UserView.m */; };
 		F24B7F111AE08EB4002911DA /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F24B7F0D1AE08EB4002911DA /* AppDelegate.m */; };
 		F24B7F121AE08EB4002911DA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F24B7F0E1AE08EB4002911DA /* main.m */; };
@@ -310,7 +310,7 @@
 		F21F4B261AE54BD3009C904E /* RongCloud.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = RongCloud.bundle; sourceTree = "<group>"; };
 		F227FB931AEBCAC000653B8D /* appIdentify.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = appIdentify.png; sourceTree = "<group>"; };
 		F227FB951AEBCC1600653B8D /* car.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = car.png; sourceTree = "<group>"; };
-		F231A13E1AF366AE004DCD93 /* arrows.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrows.png; sourceTree = "<group>"; };
+		F231A1401AF36C05004DCD93 /* arrows.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrows.png; sourceTree = "<group>"; };
 		F24B7F081AE08E61002911DA /* UserView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserView.h; sourceTree = "<group>"; };
 		F24B7F091AE08E61002911DA /* UserView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserView.m; sourceTree = "<group>"; };
 		F24B7F0C1AE08EB4002911DA /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -664,7 +664,7 @@
 		A5D1AFA11A64185300F71231 /* imageClient */ = {
 			isa = PBXGroup;
 			children = (
-				F231A13E1AF366AE004DCD93 /* arrows.png */,
+				F231A1401AF36C05004DCD93 /* arrows.png */,
 				F227FB951AEBCC1600653B8D /* car.png */,
 				F227FB931AEBCAC000653B8D /* appIdentify.png */,
 				F25B61701AEB1F3A00452E8A /* guidance1.png */,
@@ -1435,7 +1435,7 @@
 				F227FB941AEBCAC000653B8D /* appIdentify.png in Resources */,
 				F21F4B271AE54BD3009C904E /* RongCloud.bundle in Resources */,
 				F26934991A56CFFC00E9D6C1 /* LaunchScreen.xib in Resources */,
-				F231A13F1AF366AE004DCD93 /* arrows.png in Resources */,
+				F231A1411AF36C05004DCD93 /* arrows.png in Resources */,
 				A5D644161A68D0A900A09FC4 /* 登录-人头@2x.png in Resources */,
 				F27F99621AE64C53007ED071 /* HZAreaPickerView.xib in Resources */,
 				A5D1AF961A6417FD00F71231 /* 发光放大镜@2x.png in Resources */,

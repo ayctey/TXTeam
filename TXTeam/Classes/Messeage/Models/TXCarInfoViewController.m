@@ -146,6 +146,7 @@
         }
         //刷新列表
         [_tableView reloadData];
+        [self changeTitle];
         if (!pullToRefresh) {
             [loadingView removeFromSuperview];
         }else {
@@ -178,7 +179,8 @@
     _tableView.delegate = self;
     _tableView.rowHeight = 120;
     _tableView.backgroundColor = kBackgroundColor;
-    _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    _tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+    _tableView.separatorColor = [UIColor whiteColor];
     [_tableView addHeaderWithTarget:self action:@selector(headerRereshing) dateKey:@"table"];
     //设置下拉刷新titile
     _tableView.headerPullToRefreshText = @"下拉可以刷新了";
@@ -209,7 +211,6 @@
     TXSelectCarViewController *select =[[TXSelectCarViewController alloc]init];
     TXBaseNavController *navi = [[TXBaseNavController alloc]initWithRootViewController:select];
     [self.navigationController presentViewController:navi animated:YES completion:nil];
-    
 }
 
 -(void)segmentChange:(UISegmentedControl *)segment
@@ -269,7 +270,6 @@
     }
     //请求数据
     [self searchWithNewDeparture_time];
-    
 }
 
 #pragma mark - tableView delegate
@@ -301,6 +301,17 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - TXSelectCarViewDelegation
+-(void)changeTitle
+{
+    if ([dataArray count] != 0) {
+        //出发城市和到达城市
+        TXCarInfoModel *carInfoModel = [dataArray objectAtIndex:0];
+        NSString *title = [[NSString alloc]initWithFormat:@"%@<-->%@",carInfoModel.begin_city,carInfoModel.end_city];
+        self.navigationItem.title = title;
+    }
 }
 
 

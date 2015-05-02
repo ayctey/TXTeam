@@ -11,6 +11,7 @@
 #import "InputHelper.h"
 #import "TXTool.h"
 #import "TXProvinceController.h"
+
 @interface TXSelectCarViewController ()
 
 @end
@@ -19,10 +20,11 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     self.title =@"查询班次";
     //自定义barbutton 按钮
-    UIBarButtonItem *back = [[UIBarButtonItem alloc]initWithTitle:@" 返回" style:UIBarButtonItemStyleBordered target:self action:@selector(backbuttonclick)];
-    [back setTintColor:[UIColor blackColor]];
+    UIBarButtonItem *back = [[UIBarButtonItem alloc]initWithTitle:@"<返回" style:UIBarButtonItemStyleBordered target:self action:@selector(backbuttonclick)];
+    [back setTintColor:[UIColor whiteColor]];
     self.navigationItem.leftBarButtonItem =back;
     
     self.view.backgroundColor = kBackgroundColor;
@@ -85,10 +87,11 @@
        // Cartext.backgroundColor = [UIColor redColor];
         [selectView addSubview:Cartext];
         
-        UIButton *selectButton = [[UIButton alloc]initWithFrame:CGRectMake(30, 10 +viewheight*3+10, kScreenWidth-60, viewheight -10-10)];
-        [selectButton setBackgroundImage:[UIImage imageNamed:@"Title bar.png"]  forState:UIControlStateNormal];
-        [selectButton setTitle:@"查询" forState:UIControlStateNormal];
-        [selectButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        UIButton *selectButton = [[UIButton alloc]initWithFrame:CGRectMake(30, 10 +viewheight*3+10, kScreenWidth-60, 44)];
+        [selectButton setBackgroundColor:[UIColor redColor]];
+        [selectButton setTitle:@"查  询" forState:UIControlStateNormal];
+        [selectButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        selectButton.layer.cornerRadius = 5;
         [selectButton addTarget:self action:@selector(searchClick) forControlEvents:UIControlEventTouchUpInside];
         [scrollview addSubview:selectButton];
     }
@@ -96,22 +99,21 @@
 //back barbutton 方法
 -(void)backbuttonclick
 {
-   
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
+
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
-
     [super touchesBegan:touches withEvent:event];
     UITextField *textfield =(UITextField *)[self.view viewWithTag:TextTag];
     [textfield resignFirstResponder];
-    
-
 }
+
 -(void)taghandle: (UITapGestureRecognizer *)tap
 {
     [scrollview endEditing:YES];
 }
+
 //查询按钮方法
 - (void)searchClick {
     if ([self checkTextField]) {
@@ -121,8 +123,11 @@
         [TXTool sharedTXTool].departure_time = departure_time.text;
         [TXTool sharedTXTool].beginSearch = YES;
         [self dismissViewControllerAnimated:YES completion:nil];
+        
+        if ([self.delegate respondsToSelector:@selector(changeTitle:)]) {
+            [self.delegate changeTitle];
+        }
     }
-    
 }
 
 - (BOOL)checkTextField {
@@ -137,8 +142,8 @@
         return NO;
     }
     return YES;
-    
 }
+
 #pragma mark - HZAreaPicker delegate
 -(void)pickerDidChaneStatus:(HZAreaPickerView *)picker
 {
@@ -151,54 +156,44 @@
     //        self.cityValue = [NSString stringWithFormat:@"%@ %@", picker.locate.state, picker.locate.city];}
 }
 
-
-
-
 - (void)pickerDidSelect:(NSString *)Datestring
 {
     UITextField *te =(UITextField *)[self.view viewWithTag:TextTag];
     te.text=Datestring;
-    
 }
 
 #pragma mark - UITextField delegate
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
-    
-        TextTag = textField.tag;
-        if (textField.tag ==1 ||textField.tag ==2) {
-            
-            [TXTool sharedTXTool].areaIndex = textField.tag;
-            [scrollview endEditing:YES];
-            TXProvinceController *province = [[TXProvinceController alloc] init];
-            [self.navigationController pushViewController:province animated:YES];
-            
-            return NO;
-        }
-        //if (textField.tag ==5)
-       else if (textField.tag == 3){
-            
-            [scrollview endEditing:YES];
-            TXDatePicker *datepiick=[[TXDatePicker alloc]initWithDatepicker:self];
-            
-            [datepiick showInView:scrollview];
-            [datepiick DateSincenow:0];
-            return NO;
-        }
+    TextTag = textField.tag;
+    if (textField.tag ==1 ||textField.tag ==2) {
         
-    
+        [TXTool sharedTXTool].areaIndex = textField.tag;
+        [scrollview endEditing:YES];
+        TXProvinceController *province = [[TXProvinceController alloc] init];
+        [self.navigationController pushViewController:province animated:YES];
         
-    
-    
-    
+        return NO;
+    }
+    //if (textField.tag ==5)
+    else if (textField.tag == 3){
+        
+        [scrollview endEditing:YES];
+        TXDatePicker *datepiick=[[TXDatePicker alloc]initWithDatepicker:self];
+        
+        [datepiick showInView:scrollview];
+        [datepiick DateSincenow:0];
+        return NO;
+    }
     return YES ;
 }
+
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     [textField resignFirstResponder];
     return YES;
-
 }
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

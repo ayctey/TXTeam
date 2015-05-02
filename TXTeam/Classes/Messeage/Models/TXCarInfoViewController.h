@@ -9,13 +9,15 @@
 
 
 #import "TXBaseViewController.h"
+#import "TXSelectCarViewController.h"
+
 @class TXCarTableController;
 @class TXBaseTableView;
 @class TXNoDataIndicateView;
 @class TXLoadingView;
 
 @interface TXCarInfoViewController : TXBaseViewController
-<UITableViewDataSource,UITableViewDelegate>
+<UITableViewDataSource,UITableViewDelegate,TXSelectCarViewDelegation>
 {
     UISegmentedControl *datesegment;
     TXBaseTableView *_tableView;

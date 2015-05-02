@@ -50,12 +50,44 @@
     //乘务员和运营公司信息视图
     [self staffAndCompanyView];
     
+    //发送按钮
+    CGFloat sendMessageButtonWidth = kScreenWidth-2*kSpacing;
+    CGFloat sendMessageButtonHeigth = 44;
+    CGFloat sendMessageButton_x = kSpacing;
+    CGFloat sendMessageButton_y = TimeTableViewHeigth+3*kSpacing+kScreenWidth*0.5+staffAndCompanyViewHeigth;
     
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [button setTitle:@"会话" forState:UIControlStateNormal];
-    [button setFrame:CGRectMake(kScreenWidth-210, 400, 200, 40)];
-    [button addTarget:self action:@selector(huihua) forControlEvents:UIControlEventTouchUpInside];
-    [scrollView addSubview:button];
+    //发送消息button
+    UIButton *sendMessageButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [sendMessageButton setTitle:@"发  消  息" forState:UIControlStateNormal];
+    [sendMessageButton setBackgroundColor:[UIColor redColor]];
+    [sendMessageButton setTintColor:[UIColor whiteColor]];
+    sendMessageButton.titleLabel.font = [UIFont systemFontOfSize:20];
+    sendMessageButton.layer.cornerRadius = 5;
+    [sendMessageButton setFrame:CGRectMake(sendMessageButton_x, sendMessageButton_y, sendMessageButtonWidth, sendMessageButtonHeigth)];
+    [sendMessageButton addTarget:self action:@selector(huihua) forControlEvents:UIControlEventTouchUpInside];
+    [scrollView addSubview:sendMessageButton];
+    
+    //
+    
+    //拨打乘务员电话按钮
+    CGFloat callStaffButtonWidth = kScreenWidth-2*kSpacing;
+    CGFloat callStaffButtonHeigth = 44;
+    CGFloat callStaffButton_x = kSpacing;
+    CGFloat callStaffButton_y = TimeTableViewHeigth+4*kSpacing+kScreenWidth*0.5+staffAndCompanyViewHeigth+sendMessageButtonHeigth;
+    
+    //拨打电话button
+    UIButton *callStaffButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [callStaffButton setTitle:@"拨 打 电 话" forState:UIControlStateNormal];
+    [callStaffButton setBackgroundColor:[UIColor redColor]];
+    [callStaffButton setTintColor:[UIColor whiteColor]];
+    callStaffButton.titleLabel.font = [UIFont systemFontOfSize:20];
+    callStaffButton.layer.cornerRadius = 5;
+    [callStaffButton setFrame:CGRectMake(callStaffButton_x, callStaffButton_y, callStaffButtonWidth, callStaffButtonHeigth)];
+    [callStaffButton addTarget:self action:@selector(callStaff) forControlEvents:UIControlEventTouchUpInside];
+    [scrollView addSubview:callStaffButton];
+    
+    //设置ScrollView 内容长度
+    scrollView.contentSize = CGSizeMake(kScreenWidth, callStaffButton_y+callStaffButtonHeigth+kSpacing);
 }
 
 //汽车班次信息视图
@@ -82,7 +114,7 @@
     [TimeTableView addSubview:headView];
     
     //车辆类型label
-    UILabel *carTypeLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, headViewWidth/2, headViewHeigth)];
+    UILabel *carTypeLabel = [[UILabel alloc]initWithFrame:CGRectMake(kSpacing, 0, headViewWidth/2, headViewHeigth)];
     #warning ResetText
     [carTypeLabel setText:@"大型卧铺"];
     [carTypeLabel setTextColor:[UIColor whiteColor]];
@@ -90,7 +122,7 @@
     [headView addSubview:carTypeLabel];
     
     //发车日期label
-    UILabel *departureDateLabel = [[UILabel alloc]initWithFrame:CGRectMake(headViewWidth/2,0 , headViewWidth/2, headViewHeigth)];
+    UILabel *departureDateLabel = [[UILabel alloc]initWithFrame:CGRectMake(headViewWidth/2,0 , headViewWidth/2-kSpacing, headViewHeigth)];
     [departureDateLabel setText:self.departureDate];
     [departureDateLabel setTextColor:[UIColor whiteColor]];
     departureDateLabel.textAlignment = NSTextAlignmentRight;
@@ -141,27 +173,29 @@
     [TimeTableView addSubview:arriveDetailLabel];
     
     //发车时间label
-    CGFloat departureTimeLabelWidth = 50;
+    CGFloat departureTimeLabelWidth = 100;
     CGFloat departureTimeLabelHeigth = 20;
     CGFloat departureTimeLabel_x = (TimeTableViewWidth-departureTimeLabelWidth)/2;
     CGFloat departureTimeLabel_y = departureAreaLabel_y+departureAreaLabelHeigth-departureTimeLabelHeigth;
     
     UILabel *departureTimeLabel = [[UILabel alloc] initWithFrame:CGRectMake(departureTimeLabel_x, departureTimeLabel_y, departureTimeLabelWidth, departureTimeLabelHeigth)];
     NSString *departureTime = [NSString getTimeFormString:self.carInfoModel.departure_time];
-    [departureTimeLabel setText:departureTime];
+    
+    [departureTimeLabel setText:[NSString stringWithFormat:@"发车：%@",departureTime]];
     departureTimeLabel.textColor = [UIColor redColor];
     departureTimeLabel.font = [UIFont systemFontOfSize:12];
     departureTimeLabel.textAlignment = NSTextAlignmentCenter;
     [TimeTableView addSubview:departureTimeLabel];
     
     //箭头arrowsUIimageView
-    CGFloat arrowsUIimageViewWidth = 50;
-    CGFloat arrowsUIimageViewHeigth = 20;
-    CGFloat arrowsUIimageView_x = (TimeTableViewWidth-departureTimeLabelWidth)/2;
+    CGFloat arrowsUIimageViewWidth = 100;
+    CGFloat arrowsUIimageViewHeigth = 15;
+    CGFloat arrowsUIimageView_x = (TimeTableViewWidth-arrowsUIimageViewWidth)/2;
     CGFloat arrowsUIimageView_y = departureTimeLabel_y+departureTimeLabelHeigth;
     
     UIImageView *arrowsUIimageView = [[UIImageView alloc] initWithFrame:CGRectMake(arrowsUIimageView_x, arrowsUIimageView_y, arrowsUIimageViewWidth, arrowsUIimageViewHeigth)];
     [arrowsUIimageView setImage:[UIImage imageNamed:@"arrows.png"]];
+    [TimeTableView addSubview:arrowsUIimageView];
     
     //分割线
     UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, arriveDetailLabel_y+departureDetailLabelHeigth+kSpacing, kScreenWidth, 2)];
@@ -228,20 +262,56 @@
 {
     //staffAndCompanyView
     CGFloat staffAndCompanyViewWidth = kScreenWidth-2*kSpacing;
-    staffAndCompanyViewHeigth = 150;
+    staffAndCompanyViewHeigth = 90;
     CGFloat staffAndCompanyView_x = kSpacing;
     CGFloat staffAndCompanyView_y = TimeTableViewHeigth+2*kSpacing+kScreenWidth*0.5;
     
     UIView *staffAndCompanyView = [[UIView alloc] initWithFrame:CGRectMake(staffAndCompanyView_x, staffAndCompanyView_y, staffAndCompanyViewWidth, staffAndCompanyViewHeigth)];
-    staffAndCompanyView.backgroundColor = [UIColor redColor];
+    staffAndCompanyView.backgroundColor = [UIColor whiteColor];
+    staffAndCompanyView.layer.cornerRadius = 5;
     [scrollView addSubview:staffAndCompanyView];
+    
+    //乘务员姓名Label
+    CGFloat staffLabelWidth = 200;
+    CGFloat staffLabelHeigth = 30;
+    CGFloat staffLabel_x = kSpacing;
+    CGFloat staffLabel_y = 0;
+    
+    UILabel *staffLabel = [[UILabel alloc]initWithFrame:CGRectMake(staffLabel_x,staffLabel_y, staffLabelWidth, staffLabelHeigth)];
+    [staffLabel setText:[NSString stringWithFormat:@"乘务员：李总"]];
+    staffLabel.textAlignment = NSTextAlignmentLeft;
+    [staffAndCompanyView addSubview:staffLabel];
+    
+    //乘务员电话Label
+    CGFloat phoneNumberLabelWidth = 200;
+    CGFloat phoneNumberLabelHeigth = 30;
+    CGFloat phoneNumberLabel_x = kSpacing;
+    CGFloat phoneNumberLabel_y = 30;
+    
+    UILabel *phoneNumberLabel = [[UILabel alloc]initWithFrame:CGRectMake(phoneNumberLabel_x,phoneNumberLabel_y, phoneNumberLabelWidth, phoneNumberLabelHeigth)];
+    [phoneNumberLabel setText:[NSString stringWithFormat:@"电话：18300072733"]];
+    phoneNumberLabel.textAlignment = NSTextAlignmentLeft;
+    [staffAndCompanyView addSubview:phoneNumberLabel];
+    
+    //车队Label
+    CGFloat companyLabelWidth = 200;
+    CGFloat companyLabelHeigth = 30;
+    CGFloat companyLabel_x = kSpacing;
+    CGFloat companyLabel_y = 60;
+    
+    UILabel *companyLabel = [[UILabel alloc]initWithFrame:CGRectMake(companyLabel_x,companyLabel_y, companyLabelWidth, companyLabelHeigth)];
+    [companyLabel setText:[NSString stringWithFormat:@"公司：李总客运"]];
+    companyLabel.textAlignment = NSTextAlignmentLeft;
+    [staffAndCompanyView addSubview:companyLabel];
+
 }
 
+//发送消息
 - (void)huihua{
     //融云id
     NSString *rongYunID =[[NSString alloc] initWithFormat:@"T%@",[_carInfoModel.trainman_id stringValue]];
     //会话主题
-    NSString *chatTittle = [[NSString alloc] initWithFormat:@"%@-%@",_carInfoModel.begin_area,_carInfoModel.end_area];
+    NSString *chatTittle = [[NSString alloc] initWithFormat:@"%@<-->%@",_carInfoModel.begin_area,_carInfoModel.end_area];
     MyLog(@"rongyunID:%@",rongYunID);
     RCChatViewController *chatViewController = [[RCIM sharedRCIM]createPrivateChat:rongYunID title:chatTittle completion:^(){
         // 创建 ViewController 后，调用的 Block，可以用来实现自定义行为。
@@ -250,6 +320,16 @@
     chatViewController.hidesBottomBarWhenPushed = YES;
     // 把单聊视图控制器添加到导航栈。
     [self.navigationController pushViewController:chatViewController animated:YES];
+}
+
+//拨打电话
+-(void)callStaff
+{
+    UIWebView *callWebview =[[UIWebView alloc] init];
+    NSURL *telURL =[NSURL URLWithString:@"tel:612733"];
+    [callWebview loadRequest:[NSURLRequest requestWithURL:telURL]];
+    //记得添加到view上
+    [self.view addSubview:callWebview];
 }
 
 @end

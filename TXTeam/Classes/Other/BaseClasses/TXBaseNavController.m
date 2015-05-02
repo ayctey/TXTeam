@@ -19,6 +19,8 @@
 //    [self.navigationBar setBackgroundColor:[UIColor whiteColor]];
 //    [self.navigationBar setBackgroundImage:[UIImage imageNamed:@"Title bar.png"] forBarMetrics:UIBarMetricsDefault];
     self.navigationBar.barTintColor = [UIColor redColor];
+    //更改全部tittle颜色
+    [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
 }
 
 - (void)didReceiveMemoryWarning {

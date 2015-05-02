@@ -33,5 +33,4 @@
 @property (nonatomic,strong) NSString *plate_number;     //车牌号
 @property (nonatomic,strong) NSNumber *price;            //票价
 
-
 @end

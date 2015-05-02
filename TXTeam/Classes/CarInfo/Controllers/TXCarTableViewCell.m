@@ -23,9 +23,6 @@
         self.ArriveCity.text =@"深圳";
         self.price.text =@"100￥";
         self.CarStyle.text =@"大型高-卧";
-        
-        
-        
     }
     return self;
 }
@@ -39,6 +36,14 @@
     for (int index=0; index<3; index++) {
         Carlab =[[UILabel alloc]initWithFrame:CGRectMake(10, index*40, 90, 30)];
         Carlab.text = array[index];
+        if (index == 1) {
+            Carlab.backgroundColor = [UIColor greenColor];
+            Carlab.tintColor = [UIColor whiteColor];
+        }
+        if (index == 2) {
+            Carlab.backgroundColor = [UIColor redColor];
+            Carlab.tintColor = [UIColor whiteColor];
+        }
         [bgview addSubview:Carlab];
     }
     

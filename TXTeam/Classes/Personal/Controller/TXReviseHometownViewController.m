@@ -44,6 +44,7 @@
 -(void)reserveBarbutton {
 
     UIBarButtonItem *reserve = [[UIBarButtonItem alloc]initWithTitle:@"保存" style:UIBarButtonItemStyleDone target:self action:@selector(reservebutton)];
+    reserve.tintColor = [UIColor whiteColor];
     self.navigationItem.rightBarButtonItem = reserve;
 }
 

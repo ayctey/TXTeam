@@ -10,10 +10,7 @@
 
 @interface TXCarTableViewCell : UITableViewCell
 {
-    
     UILabel *Carlab;
-    
-
 }
 
 @property (nonatomic,strong) UILabel *CarGoTime;    //发车时间
