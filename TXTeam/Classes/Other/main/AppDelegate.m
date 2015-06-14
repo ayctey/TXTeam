@@ -211,6 +211,18 @@
             NSDictionary *param = @{@"account":[defaults objectForKey:@"account"],@"password":[defaults objectForKey:@"password"]};
             [TXDataService POST:_login param:param isCache:NO caChetime:0 completionBlock:^(id responseObject, NSError *error) {
                 NSDictionary *dic = responseObject;
+                
+                if(error)
+                {
+                    //登陆出现问题或者是服务器挂了
+                    if (!self.isInMainView) {
+                        //把登陆状态设置为NO
+                        isLogined = NO;
+                        //进入主页
+                        [self pushMaincomtroller];
+                    }
+                }
+                
                 int success = [[dic objectForKey:@"success"] intValue];
                 if (success) {
                     //把登陆状态设置为Yes

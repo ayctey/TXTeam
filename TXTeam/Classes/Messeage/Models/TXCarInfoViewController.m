@@ -45,8 +45,10 @@
     
     //初始化子视图
     [self initSubView];
+    
     //获取当前时间，并将值传给TXTool
     [self getDate];
+   
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -68,6 +70,11 @@
         [self searchWithNewDeparture_time];
         tool.beginSearch = NO;
     }
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    
 }
 
 #pragma mark - 加载数据
@@ -118,43 +125,56 @@
         
         //判断是否联网
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        if ([defaults objectForKey:@"reachable"] == nil) {
+            // 检测手机是否能上网络(WIFI\3G\2.5G)
+            Reachability *conn = [Reachability reachabilityForInternetConnection];
+            
+            // 判断网络状态
+            if ([conn currentReachabilityStatus] != NotReachable) {
+                //把网络状态设置yes
+               BOOL isreachable = YES;
+                [defaults setValue:[NSNumber numberWithBool:isreachable]forKey:@"reachable"];
+            }
+        }
         if ([[defaults objectForKey:@"reachable"] boolValue]) {
             //添加“加载中”视图
             [_tableView addSubview:loadingView];
+        
+            //查询汽车班次
+            [TXDataService POST:getDeparture_Timetable param:params isCache:NO caChetime:0 completionBlock:^(id responseObject, NSError *error) {
+                if (error) {//请求错误，提示信息
+                    //            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"网络请求失败！" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
+                    //            [alert show];
+                    return ;
+                }
+                //请求数据成功
+                //将数据存入数组
+                NSArray *data = [responseObject objectForKey:@"rows"];
+                
+                if ([data isEqual:@[]]) {//如果数据为空，显示“暂无班次信息”，并返回
+                    [_tableView addSubview:noDataIndicate];
+                    viewHaveBeAddFlag = YES;
+                    return;
+                }
+                dataArray = [[NSMutableArray alloc] init];
+                //字典转模型
+                for (NSDictionary *row in data) {
+                    TXCarInfoModel *carInfoModel = [[TXCarInfoModel alloc] initWithDataDic:row];
+                    [dataArray addObject:carInfoModel];
+                }
+                //刷新列表
+                [_tableView reloadData];
+                [self changeTitle];
+                if (!pullToRefresh) {
+                    [loadingView removeFromSuperview];
+                    pullToRefresh = NO;
+                    
+                }else {
+                    pullToRefresh = NO;
+                }
+            }];
         }
     }
-    
-    //查询汽车班次
-    [TXDataService POST:getDeparture_Timetable param:params isCache:NO caChetime:0 completionBlock:^(id responseObject, NSError *error) {
-        if (error) {//请求错误，提示信息
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"网络请求失败！" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
-            [alert show];
-            return ;
-        }
-        //请求数据成功
-        //将数据存入数组
-        NSArray *data = [responseObject objectForKey:@"rows"];
-        
-        if ([data isEqual:@[]]) {//如果数据为空，显示“暂无班次信息”，并返回
-            [_tableView addSubview:noDataIndicate];
-            viewHaveBeAddFlag = YES;
-            return;
-        }
-        dataArray = [[NSMutableArray alloc] init];
-        //字典转模型
-        for (NSDictionary *row in data) {
-            TXCarInfoModel *carInfoModel = [[TXCarInfoModel alloc] initWithDataDic:row];
-            [dataArray addObject:carInfoModel];
-        }
-        //刷新列表
-        [_tableView reloadData];
-        [self changeTitle];
-        if (!pullToRefresh) {
-            [loadingView removeFromSuperview];
-        }else {
-            pullToRefresh = NO;
-        }
-    }];
 }
 
 #pragma mark - 添加视图
